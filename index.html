@@ -2,251 +2,546 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>G&T S.R.L. — Prueba Catálogo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#BE000F">
+<title>G&T S.R.L. — Consulta de Productos</title>
 
 <style>
-
-*{
-  box-sizing:border-box;
+*{box-sizing:border-box}
+:root{
+  --rojo:#BE000F;
+  --rojo2:#98000c;
+  --gris:#f3f4f6;
+  --gris2:#e5e7eb;
+  --texto:#222;
+  --muted:#6b7280;
+  --verde:#176b2c;
+  --azul:#183746;
+  --dorado:#C58A22;
 }
 
-body{
+html,body{
   margin:0;
-  background:#f3f4f6;
-  font-family:Arial,Helvetica,sans-serif;
-  color:#222;
+  padding:0;
+  background:var(--gris);
+  color:var(--texto);
+  font-family:Arial,Helvetica,sans-serif
+}
+body{min-height:100vh}
+button,input,select{font:inherit}
+button{cursor:pointer}
+
+header{
+  background:#fff;
+  border-bottom:1px solid var(--gris2);
+  padding:14px 18px;
+  position:sticky;
+  top:0;
+  z-index:20;
 }
 
-.contenedor{
-  width:min(850px,calc(100% - 30px));
-  margin:40px auto;
+.header-inner{
+  max-width:1050px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px
+}
+
+header img{
+  width:150px;
+  height:auto;
+  display:block
+}
+
+.user-pill{
+  font-size:13px;
+  color:#555;
+  background:#f7f7f7;
+  border:1px solid #ddd;
+  border-radius:20px;
+  padding:8px 12px
+}
+
+.wrap{
+  max-width:1050px;
+  margin:24px auto;
+  padding:0 15px 50px
 }
 
 .card{
   background:#fff;
   border:1px solid #e2e2e2;
   border-radius:14px;
-  padding:25px;
-  box-shadow:0 3px 15px rgba(0,0,0,.06);
+  padding:20px;
+  margin-bottom:16px;
+  box-shadow:0 3px 14px rgba(0,0,0,.05)
+}
+
+.login-card{
+  max-width:430px;
+  margin:70px auto
+}
+
+.logo-login{
+  width:190px;
+  display:block;
+  margin:0 auto 20px
 }
 
 h1{
-  margin:0 0 5px;
-  color:#183746;
+  font-size:24px;
+  margin:0 0 5px
 }
 
-.subtitulo{
-  color:#777;
-  margin-bottom:25px;
+h2{
+  font-size:20px;
+  margin:0
+}
+
+.subtitle{
+  color:var(--muted);
+  font-size:14px;
+  margin-bottom:24px
 }
 
 label{
   display:block;
-  font-weight:bold;
+  font-weight:700;
   font-size:13px;
-  margin-bottom:6px;
+  margin:0 0 6px
 }
 
-input,
-select{
+input,select{
   width:100%;
   padding:12px;
   border:1px solid #cfd2d7;
-  border-radius:8px;
+  border-radius:9px;
   background:#fff;
-  font-size:15px;
+  outline:none
 }
 
-input:focus,
-select:focus{
-  outline:none;
-  border-color:#BE000F;
-  box-shadow:0 0 0 3px rgba(190,0,15,.10);
+input:focus,select:focus{
+  border-color:var(--rojo);
+  box-shadow:0 0 0 3px rgba(190,0,15,.10)
 }
 
-.campo{
-  margin-bottom:15px;
-}
-
-button{
-  width:100%;
-  padding:13px;
+.btn{
   border:0;
-  border-radius:8px;
-  background:#BE000F;
-  color:#fff;
-  font-weight:bold;
-  font-size:15px;
-  cursor:pointer;
+  border-radius:9px;
+  padding:12px 16px;
+  font-weight:800;
+  min-height:44px
 }
 
-button:hover{
-  background:#98000c;
+.btn-primary{
+  background:var(--rojo);
+  color:#fff
 }
 
-button:disabled{
-  opacity:.6;
-  cursor:not-allowed;
+.btn-primary:hover{background:var(--rojo2)}
+
+.btn-large{
+  width:100%;
+  margin-top:16px
 }
 
-.estado{
-  margin-top:20px;
-  padding:14px;
-  border-radius:8px;
-  display:none;
+.status{
+  margin-top:14px;
+  padding:11px;
+  border-radius:9px;
+  font-size:14px;
+  display:none
 }
 
-.estado.ok{
-  display:block;
-  background:#edf8f0;
-  color:#176b2c;
-}
-
-.estado.error{
+.status.error{
   display:block;
   background:#fff0f1;
   color:#9d0010;
+  border:1px solid #f2b7bd
 }
 
-.estado.info{
+.status.ok{
   display:block;
-  background:#f3f4f6;
-  color:#555;
+  background:#edf8f0;
+  color:var(--verde);
+  border:1px solid #b9dfc2
 }
 
-.resultado{
-  margin-top:20px;
-  background:#f7f7f7;
+.loading{
+  text-align:center;
+  padding:35px;
+  color:#666
+}
+
+.catalog-header{
+  text-align:center;
+  margin-bottom:22px
+}
+
+.catalog-header h1{
+  color:var(--azul);
+  font-size:28px;
+  font-weight:900;
+  letter-spacing:.2px
+}
+
+.catalog-header .subtitle{
+  margin:6px 0 0
+}
+
+.search-label{
+  color:var(--azul);
+  font-size:14px;
+  margin-bottom:7px
+}
+
+.search-box{
+  position:relative
+}
+
+.search-box input{
+  padding-left:42px;
+  font-size:15px;
+}
+
+.search-icon{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#777;
+  pointer-events:none;
+  font-size:18px
+}
+
+.resultados-titulo{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-top:18px;
+  margin-bottom:8px;
+  color:var(--azul);
+  font-weight:800;
+  font-size:13px
+}
+
+.resultados-count{
+  color:#777;
+  font-weight:400
+}
+
+/* Exactamente 6 filas visibles */
+.catalogo-lista{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  height:366px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding:2px 4px 2px 1px;
+  border:1px solid var(--gris2);
+  border-radius:10px;
+  background:#fafafa
+}
+
+.catalogo-item{
+  flex:0 0 54px;
+  width:100%;
+  text-align:left;
+  background:#fff;
+  border:1px solid #d9dce1;
   border-radius:8px;
-  padding:15px;
-  white-space:pre-wrap;
-  overflow:auto;
-  max-height:600px;
-  font-family:Consolas,monospace;
-  font-size:13px;
+  padding:8px 12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  transition:.15s
 }
 
-.oculto{
-  display:none;
+.catalogo-item:hover,
+.catalogo-item:focus{
+  border-color:var(--rojo);
+  background:#fff7f7;
+  outline:none
 }
 
+.catalogo-item-main{
+  min-width:0
+}
+
+.catalogo-item strong{
+  display:block;
+  font-size:14px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis
+}
+
+.catalogo-item span{
+  display:block;
+  margin-top:3px;
+  font-size:12px;
+  color:#666;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis
+}
+
+.catalogo-item-id{
+  flex:0 0 auto;
+  font-size:10px!important;
+  color:#999!important;
+  margin:0!important;
+  max-width:120px
+}
+
+.empty{
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:#777;
+  padding:20px
+}
+
+/* Detalle */
+.detalle-card{
+  border-top:3px solid var(--rojo)
+}
+
+.detalle-placeholder{
+  min-height:220px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:#777;
+  padding:25px
+}
+
+.detalle-top{
+  margin-bottom:18px
+}
+
+.detalle-categoria{
+  display:inline-block;
+  font-size:11px;
+  font-weight:800;
+  text-transform:uppercase;
+  color:var(--rojo);
+  background:#fff0f1;
+  border:1px solid #f2b7bd;
+  border-radius:20px;
+  padding:5px 9px;
+  margin-bottom:8px
+}
+
+.detalle-producto{
+  color:var(--azul);
+  font-size:22px;
+  font-weight:900;
+  line-height:1.2
+}
+
+.detalle-sub{
+  margin-top:7px;
+  color:#666;
+  font-size:14px
+}
+
+.detalle-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px
+}
+
+.dato{
+  border:1px solid #e0e3e6;
+  border-radius:9px;
+  padding:11px 12px;
+  background:#fafafa
+}
+
+.dato-label{
+  display:block;
+  color:#777;
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  margin-bottom:4px
+}
+
+.dato-valor{
+  display:block;
+  color:#183746;
+  font-size:15px;
+  font-weight:800
+}
+
+.dato-precio{
+  background:#fff;
+  border-left:3px solid var(--dorado)
+}
+
+.dato-precio .dato-valor{
+  font-size:17px
+}
+
+.color-lista{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:8px
+}
+
+.color-tag{
+  display:inline-block;
+  background:#f3f4f6;
+  border:1px solid #dfe2e5;
+  border-radius:15px;
+  padding:5px 9px;
+  font-size:12px;
+  color:#444
+}
+
+.nota{
+  margin-top:15px;
+  color:#777;
+  font-size:12px;
+  line-height:1.45
+}
+
+.oculto{display:none!important}
+
+.spinner{
+  width:30px;
+  height:30px;
+  margin:18px auto;
+  border:4px solid #e5e7eb;
+  border-top-color:var(--rojo);
+  border-radius:50%;
+  animation:spin .8s linear infinite
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+@media(min-width:1000px){
+  .wrap{max-width:1180px}
+  .header-inner{max-width:1180px}
+}
+
+@media(max-width:560px){
+  header{position:relative}
+  .header-inner{
+    align-items:flex-start
+  }
+  header img{width:125px}
+  .user-pill{font-size:11px}
+  .wrap{margin:12px auto}
+  .card{
+    padding:15px;
+    border-radius:11px
+  }
+  .login-card{
+    margin:35px auto
+  }
+  .catalog-header h1{
+    font-size:23px
+  }
+  .catalogo-lista{
+    height:366px
+  }
+  .detalle-grid{
+    grid-template-columns:1fr
+  }
+}
 </style>
 </head>
 
-
 <body>
 
-<div class="contenedor">
-
-  <div class="card">
-
-    <h1>G&T S.R.L.</h1>
-
-    <div class="subtitulo">
-      Prueba de acceso al catálogo
-    </div>
-
-
-    <!-- LOGIN -->
-
-    <div id="loginArea">
-
-      <div class="campo">
-
-        <label for="usuario">
-          Usuario
-        </label>
-
-        <select id="usuario">
-
-          <option value="">
-            Seleccioná tu nombre
-          </option>
-
-          <option value="Agustin">
-            Agustin
-          </option>
-
-          <option value="Gaston">
-            Gaston
-          </option>
-
-          <option value="Tomito">
-            Tomito
-          </option>
-
-          <option value="Julio">
-            Julio
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <div class="campo">
-
-        <label for="pin">
-          PIN
-        </label>
-
-        <input
-          id="pin"
-          type="password"
-          inputmode="numeric"
-          autocomplete="off"
-        >
-
-      </div>
-
-
-      <button id="loginBtn">
-        INGRESAR
-      </button>
-
-    </div>
-
-
-    <!-- ESTADO -->
-
-    <div id="estado"></div>
-
-
-    <!-- RESULTADO -->
-
-    <div
-      id="resultado"
-      class="resultado oculto"
-    ></div>
-
-  </div>
-
-</div>
-
+<div id="app"></div>
 
 <script>
-
-
-/* =========================================================
-   MISMO API QUE UTILIZA EL PRESUPUESTO
-   ========================================================= */
 
 const API_URL =
   "https://script.google.com/macros/s/AKfycby_3DebaIbZZW2qZ7ShkePBD40Bzo8wGyaHAw8w0omsKahF6CpuUEEPaG2ox3fGkAqk0w/exec";
 
+const LOGO_URL =
+  "https://raw.githubusercontent.com/Jdequelli85/qr-corralon/main/logo.png";
 
-/* =========================================================
-   JSONP
-   ========================================================= */
+let token = "";
+let vendedor = "";
+let catalogoProductos = [];
+let catalogoOpciones = [];
+let productoActual = null;
 
-function jsonp(params, timeoutMs = 20000){
+const $ = id => document.getElementById(id);
+
+const esc = s =>
+  String(s ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;");
+
+const numero = n =>
+  Number(n || 0).toLocaleString("es-AR",{
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  });
+
+const numero0 = n =>
+  Number(n || 0).toLocaleString("es-AR",{
+    maximumFractionDigits:0
+  });
+
+
+function categoriaProducto(p){
+
+  const id =
+    String(p?.["ID"] || "")
+      .trim()
+      .toUpperCase();
+
+  if(id.startsWith("CRRL-")) return "CRRL";
+  if(id.startsWith("CER-")) return "CER";
+  if(id.startsWith("POR-")) return "POR";
+  if(id.startsWith("REV-")) return "REV";
+  if(id.startsWith("PSO-")) return "PSO";
+
+  return "OTRO";
+}
+
+
+function nombreCategoria(categoria){
+
+  const nombres = {
+    CRRL:"Material de corralón",
+    CER:"Cerámico",
+    POR:"Porcelanato",
+    REV:"Revestimiento",
+    PSO:"Piso",
+    OTRO:"Producto"
+  };
+
+  return nombres[categoria] || "Producto";
+}
+
+
+function jsonp(params, timeoutMs=20000){
 
   return new Promise((resolve,reject)=>{
 
     const callback =
-      "prueba_" +
+      "gtconsulta_" +
       Date.now() +
       "_" +
       Math.floor(Math.random()*100000);
@@ -261,9 +556,7 @@ function jsonp(params, timeoutMs = 20000){
         _ts:Date.now()
       });
 
-    let terminado = false;
-
-    const timer =
+    let timer =
       setTimeout(()=>{
 
         cleanup();
@@ -276,6 +569,7 @@ function jsonp(params, timeoutMs = 20000){
 
       },timeoutMs);
 
+    let terminado = false;
 
     function cleanup(){
 
@@ -291,7 +585,6 @@ function jsonp(params, timeoutMs = 20000){
 
     }
 
-
     window[callback] = data => {
 
       cleanup();
@@ -299,7 +592,6 @@ function jsonp(params, timeoutMs = 20000){
       resolve(data);
 
     };
-
 
     script.onerror = ()=>{
 
@@ -313,391 +605,923 @@ function jsonp(params, timeoutMs = 20000){
 
     };
 
-
     script.src =
-      API_URL +
-      "?" +
-      q.toString();
-
+      API_URL + "?" + q.toString();
 
     document.body.appendChild(script);
 
   });
+}
+
+
+/* =========================================================
+   LOGIN — VISUAL BASADO EN ppto.gytsrl.com
+   ========================================================= */
+
+function mostrarLogin(mensaje=""){
+
+  document.title =
+    "G&T S.R.L. — Consulta de Productos";
+
+  $("app").innerHTML = `
+
+    <main class="wrap">
+
+      <section class="card login-card">
+
+        <img
+          class="logo-login"
+          src="${LOGO_URL}"
+          alt="G&T S.R.L."
+        >
+
+        <h1>Consulta de Productos</h1>
+
+        <div class="subtitle">
+          Acceso para personal autorizado
+        </div>
+
+        <form id="loginForm">
+
+          <label>Vendedor</label>
+
+          <select id="loginUsuario" required>
+
+            <option value="">
+              Seleccioná tu nombre
+            </option>
+
+            <option value="Agustin">Agustin</option>
+            <option value="Gaston">Gaston</option>
+            <option value="Tomito">Tomito</option>
+            <option value="Julio">Julio</option>
+
+          </select>
+
+          <div style="height:12px"></div>
+
+          <label>PIN</label>
+
+          <input
+            id="loginPin"
+            type="password"
+            inputmode="numeric"
+            autocomplete="off"
+            required
+          >
+
+          <button
+            class="btn btn-primary btn-large"
+            id="loginBtn"
+          >
+            INGRESAR
+          </button>
+
+          <div
+            id="loginStatus"
+            class="status ${mensaje ? "error" : ""}"
+          >
+            ${esc(mensaje)}
+          </div>
+
+        </form>
+
+        <div
+          style="
+            margin-top:22px;
+            text-align:center;
+            color:#888;
+            font-size:12px
+          "
+        >
+          G&T S.R.L. · Consulta de Productos
+        </div>
+
+      </section>
+
+    </main>
+  `;
+
+
+  $("loginForm").onsubmit = async e => {
+
+    e.preventDefault();
+
+    const btn = $("loginBtn");
+    const st = $("loginStatus");
+
+    btn.disabled = true;
+    btn.textContent = "VERIFICANDO...";
+
+    st.className = "status";
+    st.textContent = "";
+
+    try{
+
+      const r =
+        await jsonp({
+          accion:"login",
+          usuario:$("loginUsuario").value,
+          pin:$("loginPin").value
+        });
+
+
+      if(!r || !r.ok){
+
+        throw new Error(
+          r?.error ||
+          "Usuario o PIN incorrecto."
+        );
+
+      }
+
+
+      token = r.token;
+      vendedor = r.usuario;
+
+
+      await cargarCatalogo();
+
+
+      renderConsulta();
+
+    }catch(err){
+
+      st.className = "status error";
+      st.textContent = err.message;
+
+      btn.disabled = false;
+      btn.textContent = "INGRESAR";
+
+    }
+
+  };
 
 }
 
 
 /* =========================================================
-   ELEMENTOS
+   CARGA COMPLETA DEL CATÁLOGO
    ========================================================= */
 
-const usuario =
-  document.getElementById("usuario");
+async function cargarCatalogo(){
 
-const pin =
-  document.getElementById("pin");
+  mostrarCarga();
 
-const loginBtn =
-  document.getElementById("loginBtn");
-
-const estado =
-  document.getElementById("estado");
-
-const resultado =
-  document.getElementById("resultado");
+  const r =
+    await jsonp({
+      accion:"catalogo",
+      token
+    });
 
 
-/* =========================================================
-   MOSTRAR ESTADO
-   ========================================================= */
+  if(!r?.ok){
 
-function mostrarEstado(
-  mensaje,
-  tipo="info"
-){
+    throw new Error(
+      r?.error ||
+      "No se pudo cargar el catálogo."
+    );
 
-  estado.className =
-    "estado " + tipo;
+  }
 
-  estado.textContent =
-    mensaje;
+
+  catalogoProductos =
+    Array.isArray(r.productos)
+      ? r.productos
+      : (
+          Array.isArray(r.catalogo)
+            ? r.catalogo
+            : []
+        );
+
+
+  construirCatalogo(catalogoProductos);
+
+}
+
+
+function construirCatalogo(productos){
+
+  catalogoOpciones = [];
+
+  const claves = new Set();
+
+
+  productos.forEach(p=>{
+
+    const categoria =
+      categoriaProducto(p);
+
+    if(categoria === "OTRO"){
+
+      /*
+       * En esta primera versión
+       * también permitimos OTRO.
+       */
+
+    }
+
+
+    const producto =
+      String(p["Producto"] || "").trim();
+
+    const medida =
+      String(p["Medida"] || "").trim();
+
+
+    /*
+     * Igual que el catálogo actual:
+     * una opción por Producto + Medida.
+     * Los colores no duplican el resultado.
+     */
+
+    const clave =
+      `${categoria}|${producto.toUpperCase()}|${medida.toUpperCase()}`;
+
+
+    if(claves.has(clave))return;
+
+    claves.add(clave);
+
+
+    catalogoOpciones.push({
+      ...p
+    });
+
+  });
+
+
+  if(!catalogoOpciones.length){
+
+    throw new Error(
+      "El catálogo no contiene productos."
+    );
+
+  }
+
+}
+
+
+function mostrarCarga(){
+
+  $("app").innerHTML = `
+
+    <main class="wrap">
+
+      <section class="card loading">
+
+        <img
+          class="logo-login"
+          src="${LOGO_URL}"
+          alt="G&T S.R.L."
+        >
+
+        <h1>Cargando productos...</h1>
+
+        <div class="subtitle">
+          Preparando el catálogo.
+        </div>
+
+        <div class="spinner"></div>
+
+      </section>
+
+    </main>
+  `;
 
 }
 
 
 /* =========================================================
-   LOGIN
+   INTERFAZ DE CONSULTA
    ========================================================= */
 
-async function ingresar(){
+function renderConsulta(){
 
-  const usuarioValor =
-    usuario.value;
-
-  const pinValor =
-    pin.value.trim();
+  document.title =
+    "G&T S.R.L. — Consulta de Productos";
 
 
-  if(!usuarioValor){
+  $("app").innerHTML = `
 
-    mostrarEstado(
-      "Seleccioná un usuario.",
-      "error"
-    );
+    <header>
 
-    return;
+      <div class="header-inner">
 
-  }
+        <img
+          src="${LOGO_URL}"
+          alt="G&T S.R.L."
+        >
 
+        <div class="user-pill">
+          Vendedor:
+          <strong>${esc(vendedor)}</strong>
+        </div>
 
-  if(!pinValor){
+      </div>
 
-    mostrarEstado(
-      "Ingresá el PIN.",
-      "error"
-    );
-
-    return;
-
-  }
+    </header>
 
 
-  loginBtn.disabled=true;
+    <main class="wrap">
 
-  loginBtn.textContent=
-    "VERIFICANDO...";
+      <section class="card">
+
+        <div class="catalog-header">
+
+          <h1>Consulta de Productos</h1>
+
+          <div class="subtitle">
+            Buscá un producto para consultar sus precios y características.
+          </div>
+
+        </div>
 
 
-  mostrarEstado(
-    "Iniciando sesión...",
-    "info"
+        <label
+          class="search-label"
+          for="buscarProducto"
+        >
+          🔎 BUSCAR PRODUCTO
+        </label>
+
+
+        <div class="search-box">
+
+          <span class="search-icon">⌕</span>
+
+          <input
+            id="buscarProducto"
+            type="search"
+            placeholder="Nombre, medida, ID..."
+            autocomplete="off"
+          >
+
+        </div>
+
+
+        <div class="resultados-titulo">
+
+          <span>Resultados</span>
+
+          <span
+            id="resultadosCount"
+            class="resultados-count"
+          ></span>
+
+        </div>
+
+
+        <div
+          id="catalogoLista"
+          class="catalogo-lista"
+        ></div>
+
+      </section>
+
+
+      <section class="card detalle-card">
+
+        <div
+          id="detalleProducto"
+          class="detalle-placeholder"
+        >
+          Seleccioná un producto para ver
+          sus precios y características.
+        </div>
+
+      </section>
+
+    </main>
+  `;
+
+
+  $("buscarProducto").addEventListener(
+    "input",
+    renderCatalogo
   );
 
 
-  try{
-
-    /*
-     * MISMA ACCIÓN QUE UTILIZA
-     * EL PRESUPUESTO ACTUAL.
-     */
-
-    const r =
-      await jsonp({
-
-        accion:"login",
-
-        usuario:usuarioValor,
-
-        pin:pinValor
-
-      });
-
-
-    console.log(
-      "Respuesta login:",
-      r
-    );
-
-
-    if(!r || !r.ok){
-
-      throw new Error(
-        r?.error ||
-        "Usuario o PIN incorrecto."
-      );
-
-    }
-
-
-    /*
-     * OBTUVIMOS EL TOKEN
-     */
-
-    const token =
-      r.token;
-
-
-    if(!token){
-
-      throw new Error(
-        "El servidor respondió correctamente, pero no entregó token."
-      );
-
-    }
-
-
-    mostrarEstado(
-      "✅ Login correcto. Token obtenido. Cargando catálogo...",
-      "ok"
-    );
-
-
-    /*
-     * AHORA SOLICITAMOS EL CATÁLOGO
-     */
-
-    const catalogo =
-      await jsonp({
-
-        accion:"catalogo",
-
-        token:token
-
-      });
-
-
-    console.log(
-      "Respuesta catálogo:",
-      catalogo
-    );
-
-
-    if(!catalogo || !catalogo.ok){
-
-      throw new Error(
-        catalogo?.error ||
-        "No se pudo cargar el catálogo."
-      );
-
-    }
-
-
-    /*
-     * EL BACKEND ACTUAL DEVUELVE
-     * r.productos
-     */
-
-    const productos =
-      Array.isArray(catalogo.productos)
-        ? catalogo.productos
-        : (
-            Array.isArray(catalogo.catalogo)
-              ? catalogo.catalogo
-              : []
-          );
-
-
-    /*
-     * RESULTADO
-     */
-
-    mostrarEstado(
-      "✅ CATÁLOGO CARGADO CORRECTAMENTE",
-      "ok"
-    );
-
-
-    resultado.classList.remove(
-      "oculto"
-    );
-
-
-    let texto =
-      "PRODUCTOS RECIBIDOS: " +
-      productos.length +
-      "\n\n";
-
-
-    /*
-     * MOSTRAR LOS PRIMEROS 10
-     */
-
-    productos
-      .slice(0,10)
-      .forEach((p,i)=>{
-
-        texto +=
-          "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-
-        texto +=
-          (i+1) +
-          ". " +
-          (p["Producto"] || "") +
-          "\n";
-
-        texto +=
-          "ID: " +
-          (p["ID"] || "") +
-          "\n";
-
-        texto +=
-          "Medida: " +
-          (p["Medida"] || "") +
-          "\n";
-
-        texto +=
-          "Color: " +
-          (p["Color"] || "") +
-          "\n";
-
-        texto +=
-          "Precio Contado: " +
-          (p["Precio Contado"] || "") +
-          "\n";
-
-        texto +=
-          "OFERTA: " +
-          (p["OFERTA"] || "") +
-          "\n";
-
-        texto +=
-          "Precio Tarjeta: " +
-          (p["Precio Tarjeta"] || "") +
-          "\n";
-
-        texto +=
-          "Caja m²: " +
-          (p["Caja m²"] || "") +
-          "\n";
-
-        texto +=
-          "Kg/Caja: " +
-          (p["Kg/Caja"] || "") +
-          "\n\n";
-
-      });
-
-
-    texto +=
-      "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-
-    texto +=
-      "Columnas disponibles en el catálogo:\n\n";
-
-
-    /*
-     * MOSTRAR TODAS LAS COLUMNAS
-     * DEL PRIMER PRODUCTO
-     */
-
-    if(productos.length){
-
-      Object.keys(productos[0])
-        .forEach(campo=>{
-
-          texto +=
-            "• " +
-            campo +
-            "\n";
-
-        });
-
-    }
-
-
-    resultado.textContent =
-      texto;
-
-
-    /*
-     * PARA PODER COMPROBAR DESPUÉS
-     * CUÁNTOS PRODUCTOS HAY,
-     * GUARDAMOS TEMPORALMENTE EL CATÁLOGO
-     * EN MEMORIA DEL NAVEGADOR.
-     */
-
-    window.catalogoPrueba =
-      productos;
-
-
-  }catch(error){
-
-    console.error(
-      "Error:",
-      error
-    );
-
-
-    mostrarEstado(
-      "❌ ERROR: " +
-      error.message,
-      "error"
-    );
-
-
-    resultado.classList.remove(
-      "oculto"
-    );
-
-
-    resultado.textContent =
-      "La prueba no pudo completarse.\n\n" +
-      "Detalle:\n" +
-      error.message;
-
-  }finally{
-
-    loginBtn.disabled=false;
-
-    loginBtn.textContent=
-      "INGRESAR";
-
-  }
+  renderCatalogo();
 
 }
 
 
 /* =========================================================
-   EVENTOS
+   TEXTO DE RESULTADO
    ========================================================= */
 
-loginBtn.addEventListener(
-  "click",
-  ingresar
-);
+function textoOpcionCatalogo(p){
+
+  const producto =
+    String(p["Producto"] || "").trim();
+
+  const medida =
+    String(p["Medida"] || "").trim();
+
+  const id =
+    String(p["ID"] || "").trim();
 
 
-pin.addEventListener(
-  "keydown",
-  e=>{
+  if(medida){
 
-    if(e.key==="Enter"){
-      ingresar();
+    return `${producto} ${medida} ${id}`;
+
+  }
+
+  return `${producto} ${id}`;
+
+}
+
+
+/* =========================================================
+   BUSCADOR
+   ========================================================= */
+
+function renderCatalogo(){
+
+  const lista =
+    $("catalogoLista");
+
+  if(!lista)return;
+
+
+  const q =
+    String(
+      $("buscarProducto")?.value || ""
+    )
+    .trim()
+    .toLocaleLowerCase("es-AR");
+
+
+  const resultados =
+    catalogoOpciones.filter(p=>{
+
+      if(!q)return true;
+
+      return textoOpcionCatalogo(p)
+        .toLocaleLowerCase("es-AR")
+        .includes(q);
+
+    });
+
+
+  $("resultadosCount").textContent =
+    resultados.length +
+    (
+      resultados.length === 1
+        ? " producto"
+        : " productos"
+    );
+
+
+  if(!resultados.length){
+
+    lista.innerHTML = `
+      <div class="empty">
+        No se encontraron productos.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  lista.innerHTML =
+    resultados.map((p,i)=>{
+
+      const indice =
+        catalogoOpciones.indexOf(p);
+
+      const medida =
+        String(p["Medida"] || "").trim();
+
+      const id =
+        String(p["ID"] || "").trim();
+
+
+      return `
+
+        <button
+          type="button"
+          class="catalogo-item"
+          data-index="${indice}"
+        >
+
+          <div class="catalogo-item-main">
+
+            <strong>
+              ${esc(p["Producto"] || "")}
+            </strong>
+
+            <span>
+              ${esc(medida || "Sin medida")}
+            </span>
+
+          </div>
+
+          <span class="catalogo-item-id">
+            ${esc(id)}
+          </span>
+
+        </button>
+
+      `;
+
+    }).join("");
+
+
+  lista
+    .querySelectorAll("[data-index]")
+    .forEach(item=>{
+
+      item.addEventListener(
+        "click",
+        ()=>{
+
+          seleccionarProducto(
+            Number(item.dataset.index)
+          );
+
+        }
+      );
+
+    });
+
+}
+
+
+function seleccionarProducto(indice){
+
+  const p =
+    catalogoOpciones[indice];
+
+  if(!p)return;
+
+  productoActual = p;
+
+  mostrarProducto(p);
+
+}
+
+
+/* =========================================================
+   DETALLE DEL PRODUCTO
+   ========================================================= */
+
+function mostrarProducto(p){
+
+  const detalle =
+    $("detalleProducto");
+
+  const categoria =
+    categoriaProducto(p);
+
+
+  const producto =
+    String(p["Producto"] || "").trim();
+
+  const medida =
+    String(p["Medida"] || "").trim();
+
+  const colorRaw =
+    String(p["Color"] || "").trim();
+
+  const precioContado =
+    Number(p["Precio Contado"] || 0);
+
+  const precioTarjeta =
+    Number(p["Precio Tarjeta"] || 0);
+
+  const oferta =
+    Number(p["OFERTA"] || 0);
+
+  const tieneOferta =
+    Number.isFinite(oferta) &&
+    oferta > 0;
+
+  const cajaM2 =
+    Number(p["Caja m²"] || 0);
+
+  const kgCaja =
+    Number(p["Kg/Caja"] || 0);
+
+
+  /*
+   * Colores:
+   * el catálogo actual utiliza "-" como separador.
+   */
+
+  const colores =
+    colorRaw
+      .split(/\s*-\s*/)
+      .map(c=>c.trim())
+      .filter(Boolean);
+
+
+  let html = `
+
+    <div class="detalle-top">
+
+      <div class="detalle-categoria">
+        ${esc(nombreCategoria(categoria))}
+      </div>
+
+      <div class="detalle-producto">
+        ${esc(producto)}
+      </div>
+  `;
+
+
+  if(medida){
+
+    html += `
+      <div class="detalle-sub">
+        Medida: <strong>${esc(medida)}</strong>
+      </div>
+    `;
+
+  }
+
+
+  if(colores.length){
+
+    html += `
+
+      <div class="detalle-sub">
+        <strong>Color${colores.length > 1 ? "es" : ""}:</strong>
+
+        <div class="color-lista">
+
+          ${colores.map(c=>`
+            <span class="color-tag">
+              ${esc(c)}
+            </span>
+          `).join("")}
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+
+  html += `</div>`;
+
+
+  /*
+   * PRECIOS
+   */
+
+  html += `<div class="detalle-grid">`;
+
+
+  if(precioContado > 0){
+
+    html += `
+      <div class="dato dato-precio">
+
+        <span class="dato-label">
+          Precio contado
+        </span>
+
+        <span class="dato-valor">
+          $ ${numero(precioContado)}
+          ${categoria === "CRRL" ? "/ unidad" : "/ m²"}
+        </span>
+
+      </div>
+    `;
+
+  }
+
+
+  if(tieneOferta){
+
+    html += `
+      <div class="dato dato-precio">
+
+        <span class="dato-label">
+          Precio oferta
+        </span>
+
+        <span class="dato-valor">
+          $ ${numero(oferta)}
+          ${categoria === "CRRL" ? "/ unidad" : "/ m²"}
+        </span>
+
+      </div>
+    `;
+
+  }
+
+
+  if(precioTarjeta > 0){
+
+    html += `
+      <div class="dato dato-precio">
+
+        <span class="dato-label">
+          Precio tarjeta
+        </span>
+
+        <span class="dato-valor">
+          $ ${numero(precioTarjeta)}
+          ${categoria === "CRRL" ? "/ unidad" : "/ m²"}
+        </span>
+
+      </div>
+    `;
+
+  }
+
+
+  /*
+   * DATOS DE CAJA
+   *
+   * Se muestran cuando existen.
+   * No mostramos campos vacíos.
+   */
+
+  if(cajaM2 > 0){
+
+    html += `
+      <div class="dato">
+
+        <span class="dato-label">
+          m² por caja
+        </span>
+
+        <span class="dato-valor">
+          ${numero(cajaM2)} m²
+        </span>
+
+      </div>
+    `;
+
+
+    /*
+     * Precio por caja:
+     * para esta consulta es simplemente
+     * Precio Contado x m² de caja.
+     *
+     * No se utiliza para reemplazar
+     * el precio de tarjeta ni el precio
+     * almacenado en QR_PUBLICO.
+     */
+
+    if(precioContado > 0){
+
+      html += `
+        <div class="dato">
+
+          <span class="dato-label">
+            Precio por caja
+          </span>
+
+          <span class="dato-valor">
+            $ ${numero(precioContado * cajaM2)}
+          </span>
+
+        </div>
+      `;
+
     }
 
   }
-);
 
+
+  /*
+   * Cantidad de unidades por caja
+   * calculada igual que el sistema actual.
+   */
+
+  if(medida && cajaM2 > 0){
+
+    const partes =
+      medida
+        .toLowerCase()
+        .split("x")
+        .map(v =>
+          Number(
+            String(v)
+              .trim()
+              .replace(",", ".")
+          )
+        );
+
+
+    if(
+      partes.length === 2 &&
+      Number.isFinite(partes[0]) &&
+      Number.isFinite(partes[1]) &&
+      partes[0] > 0 &&
+      partes[1] > 0
+    ){
+
+      const areaPieza =
+        (partes[0] / 100) *
+        (partes[1] / 100);
+
+      const unidades =
+        Math.round(
+          cajaM2 / areaPieza
+        );
+
+
+      if(unidades > 0){
+
+        html += `
+          <div class="dato">
+
+            <span class="dato-label">
+              Cantidad por caja
+            </span>
+
+            <span class="dato-valor">
+              ${numero0(unidades)} unidades
+            </span>
+
+          </div>
+        `;
+
+      }
+
+    }
+
+  }
+
+
+  if(kgCaja > 0){
+
+    html += `
+      <div class="dato">
+
+        <span class="dato-label">
+          Kg por caja
+        </span>
+
+        <span class="dato-valor">
+          ${numero(kgCaja)} kg
+        </span>
+
+      </div>
+    `;
+
+  }
+
+
+  /*
+   * ID
+   */
+
+  const id =
+    String(p["ID"] || "").trim();
+
+  if(id){
+
+    html += `
+      <div class="dato">
+
+        <span class="dato-label">
+          Código
+        </span>
+
+        <span class="dato-valor">
+          ${esc(id)}
+        </span>
+
+      </div>
+    `;
+
+  }
+
+
+  html += `</div>`;
+
+
+  html += `
+
+    <div class="nota">
+      Información obtenida directamente del catálogo de productos.
+    </div>
+
+  `;
+
+
+  detalle.innerHTML = html;
+
+}
+
+
+/* =========================================================
+   INICIO
+   ========================================================= */
+
+mostrarLogin();
 
 </script>
 
