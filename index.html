@@ -1,120 +1,294 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Prueba catálogo G&T</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f3f4f6;
-      margin: 0;
-      padding: 30px;
-      color: #222;
-    }
+<title>G&T S.R.L. — Prueba Catálogo</title>
 
-    .contenedor {
-      max-width: 800px;
-      margin: auto;
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 3px 15px rgba(0,0,0,.08);
-    }
+<style>
 
-    h1 {
-      margin-top: 0;
-      color: #183746;
-    }
+*{
+  box-sizing:border-box;
+}
 
-    #estado {
-      padding: 15px;
-      border-radius: 8px;
-      background: #eee;
-      margin-bottom: 20px;
-    }
+body{
+  margin:0;
+  background:#f3f4f6;
+  font-family:Arial,Helvetica,sans-serif;
+  color:#222;
+}
 
-    #resultado {
-      white-space: pre-wrap;
-      background: #f7f7f7;
-      padding: 15px;
-      border-radius: 8px;
-      max-height: 500px;
-      overflow: auto;
-    }
+.contenedor{
+  width:min(850px,calc(100% - 30px));
+  margin:40px auto;
+}
 
-    .ok {
-      background: #edf8f0 !important;
-      color: #176b2c;
-    }
+.card{
+  background:#fff;
+  border:1px solid #e2e2e2;
+  border-radius:14px;
+  padding:25px;
+  box-shadow:0 3px 15px rgba(0,0,0,.06);
+}
 
-    .error {
-      background: #fff0f1 !important;
-      color: #9d0010;
-    }
-  </style>
+h1{
+  margin:0 0 5px;
+  color:#183746;
+}
+
+.subtitulo{
+  color:#777;
+  margin-bottom:25px;
+}
+
+label{
+  display:block;
+  font-weight:bold;
+  font-size:13px;
+  margin-bottom:6px;
+}
+
+input,
+select{
+  width:100%;
+  padding:12px;
+  border:1px solid #cfd2d7;
+  border-radius:8px;
+  background:#fff;
+  font-size:15px;
+}
+
+input:focus,
+select:focus{
+  outline:none;
+  border-color:#BE000F;
+  box-shadow:0 0 0 3px rgba(190,0,15,.10);
+}
+
+.campo{
+  margin-bottom:15px;
+}
+
+button{
+  width:100%;
+  padding:13px;
+  border:0;
+  border-radius:8px;
+  background:#BE000F;
+  color:#fff;
+  font-weight:bold;
+  font-size:15px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#98000c;
+}
+
+button:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+.estado{
+  margin-top:20px;
+  padding:14px;
+  border-radius:8px;
+  display:none;
+}
+
+.estado.ok{
+  display:block;
+  background:#edf8f0;
+  color:#176b2c;
+}
+
+.estado.error{
+  display:block;
+  background:#fff0f1;
+  color:#9d0010;
+}
+
+.estado.info{
+  display:block;
+  background:#f3f4f6;
+  color:#555;
+}
+
+.resultado{
+  margin-top:20px;
+  background:#f7f7f7;
+  border-radius:8px;
+  padding:15px;
+  white-space:pre-wrap;
+  overflow:auto;
+  max-height:600px;
+  font-family:Consolas,monospace;
+  font-size:13px;
+}
+
+.oculto{
+  display:none;
+}
+
+</style>
 </head>
+
 
 <body>
 
 <div class="contenedor">
 
-  <h1>Prueba de catálogo G&T S.R.L.</h1>
+  <div class="card">
 
-  <div id="estado">
-    ⏳ Intentando cargar el catálogo...
-  </div>
+    <h1>G&T S.R.L.</h1>
 
-  <div id="resultado">
-    Esperando respuesta...
+    <div class="subtitulo">
+      Prueba de acceso al catálogo
+    </div>
+
+
+    <!-- LOGIN -->
+
+    <div id="loginArea">
+
+      <div class="campo">
+
+        <label for="usuario">
+          Usuario
+        </label>
+
+        <select id="usuario">
+
+          <option value="">
+            Seleccioná tu nombre
+          </option>
+
+          <option value="Agustin">
+            Agustin
+          </option>
+
+          <option value="Gaston">
+            Gaston
+          </option>
+
+          <option value="Tomito">
+            Tomito
+          </option>
+
+          <option value="Julio">
+            Julio
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="campo">
+
+        <label for="pin">
+          PIN
+        </label>
+
+        <input
+          id="pin"
+          type="password"
+          inputmode="numeric"
+          autocomplete="off"
+        >
+
+      </div>
+
+
+      <button id="loginBtn">
+        INGRESAR
+      </button>
+
+    </div>
+
+
+    <!-- ESTADO -->
+
+    <div id="estado"></div>
+
+
+    <!-- RESULTADO -->
+
+    <div
+      id="resultado"
+      class="resultado oculto"
+    ></div>
+
   </div>
 
 </div>
 
+
 <script>
+
+
+/* =========================================================
+   MISMO API QUE UTILIZA EL PRESUPUESTO
+   ========================================================= */
 
 const API_URL =
   "https://script.google.com/macros/s/AKfycby_3DebaIbZZW2qZ7ShkePBD40Bzo8wGyaHAw8w0omsKahF6CpuUEEPaG2ox3fGkAqk0w/exec";
 
 
-function jsonp(params, timeoutMs = 20000) {
+/* =========================================================
+   JSONP
+   ========================================================= */
 
-  return new Promise((resolve, reject) => {
+function jsonp(params, timeoutMs = 20000){
+
+  return new Promise((resolve,reject)=>{
 
     const callback =
       "prueba_" +
       Date.now() +
       "_" +
-      Math.floor(Math.random() * 100000);
+      Math.floor(Math.random()*100000);
 
-    const script = document.createElement("script");
+    const script =
+      document.createElement("script");
 
-    const q = new URLSearchParams({
-      ...params,
-      callback,
-      _ts: Date.now()
-    });
+    const q =
+      new URLSearchParams({
+        ...params,
+        callback,
+        _ts:Date.now()
+      });
 
     let terminado = false;
 
-    const timer = setTimeout(() => {
-      cleanup();
-      reject(new Error("Tiempo de espera agotado."));
-    }, timeoutMs);
+    const timer =
+      setTimeout(()=>{
+
+        cleanup();
+
+        reject(
+          new Error(
+            "Tiempo de espera agotado."
+          )
+        );
+
+      },timeoutMs);
 
 
-    function cleanup() {
+    function cleanup(){
 
-      if (terminado) return;
+      if(terminado)return;
 
-      terminado = true;
+      terminado=true;
 
       clearTimeout(timer);
 
       delete window[callback];
 
       script.remove();
+
     }
 
 
@@ -127,18 +301,24 @@ function jsonp(params, timeoutMs = 20000) {
     };
 
 
-    script.onerror = () => {
+    script.onerror = ()=>{
 
       cleanup();
 
       reject(
-        new Error("No se pudo conectar con el servidor.")
+        new Error(
+          "No se pudo conectar con el servidor."
+        )
       );
 
     };
 
 
-    script.src = API_URL + "?" + q.toString();
+    script.src =
+      API_URL +
+      "?" +
+      q.toString();
+
 
     document.body.appendChild(script);
 
@@ -147,140 +327,377 @@ function jsonp(params, timeoutMs = 20000) {
 }
 
 
-async function probarCatalogo() {
+/* =========================================================
+   ELEMENTOS
+   ========================================================= */
 
-  const estado = document.getElementById("estado");
-  const resultado = document.getElementById("resultado");
+const usuario =
+  document.getElementById("usuario");
 
-  try {
+const pin =
+  document.getElementById("pin");
+
+const loginBtn =
+  document.getElementById("loginBtn");
+
+const estado =
+  document.getElementById("estado");
+
+const resultado =
+  document.getElementById("resultado");
+
+
+/* =========================================================
+   MOSTRAR ESTADO
+   ========================================================= */
+
+function mostrarEstado(
+  mensaje,
+  tipo="info"
+){
+
+  estado.className =
+    "estado " + tipo;
+
+  estado.textContent =
+    mensaje;
+
+}
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+async function ingresar(){
+
+  const usuarioValor =
+    usuario.value;
+
+  const pinValor =
+    pin.value.trim();
+
+
+  if(!usuarioValor){
+
+    mostrarEstado(
+      "Seleccioná un usuario.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if(!pinValor){
+
+    mostrarEstado(
+      "Ingresá el PIN.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  loginBtn.disabled=true;
+
+  loginBtn.textContent=
+    "VERIFICANDO...";
+
+
+  mostrarEstado(
+    "Iniciando sesión...",
+    "info"
+  );
+
+
+  try{
 
     /*
-     * IMPORTANTE:
-     * Esta es exactamente la misma acción
-     * que utiliza actualmente ppto.gytsrl.com
+     * MISMA ACCIÓN QUE UTILIZA
+     * EL PRESUPUESTO ACTUAL.
      */
 
-    const r = await jsonp({
-      accion: "catalogo"
-    });
+    const r =
+      await jsonp({
+
+        accion:"login",
+
+        usuario:usuarioValor,
+
+        pin:pinValor
+
+      });
 
 
-    console.log("Respuesta completa:", r);
+    console.log(
+      "Respuesta login:",
+      r
+    );
 
 
-    if (!r) {
+    if(!r || !r.ok){
 
       throw new Error(
-        "El servidor no devolvió ninguna respuesta."
+        r?.error ||
+        "Usuario o PIN incorrecto."
       );
 
     }
 
 
-    if (!r.ok) {
+    /*
+     * OBTUVIMOS EL TOKEN
+     */
+
+    const token =
+      r.token;
+
+
+    if(!token){
 
       throw new Error(
-        r.error || "El servidor respondió con error."
+        "El servidor respondió correctamente, pero no entregó token."
       );
 
     }
 
+
+    mostrarEstado(
+      "✅ Login correcto. Token obtenido. Cargando catálogo...",
+      "ok"
+    );
+
+
+    /*
+     * AHORA SOLICITAMOS EL CATÁLOGO
+     */
+
+    const catalogo =
+      await jsonp({
+
+        accion:"catalogo",
+
+        token:token
+
+      });
+
+
+    console.log(
+      "Respuesta catálogo:",
+      catalogo
+    );
+
+
+    if(!catalogo || !catalogo.ok){
+
+      throw new Error(
+        catalogo?.error ||
+        "No se pudo cargar el catálogo."
+      );
+
+    }
+
+
+    /*
+     * EL BACKEND ACTUAL DEVUELVE
+     * r.productos
+     */
 
     const productos =
-      Array.isArray(r.productos)
-        ? r.productos
-        : (Array.isArray(r.catalogo)
-            ? r.catalogo
-            : []);
-
-
-    estado.className = "ok";
-
-    estado.innerHTML =
-      "✅ RESPUESTA RECIBIDA<br>" +
-      "Productos recibidos: <strong>" +
-      productos.length +
-      "</strong>";
-
-
-    if (!productos.length) {
-
-      resultado.textContent =
-        "La respuesta fue correcta, pero no contiene productos.\n\n" +
-        JSON.stringify(r, null, 2);
-
-      return;
-
-    }
+      Array.isArray(catalogo.productos)
+        ? catalogo.productos
+        : (
+            Array.isArray(catalogo.catalogo)
+              ? catalogo.catalogo
+              : []
+          );
 
 
     /*
-     * Mostramos los primeros productos
-     * para comprobar qué información llega.
+     * RESULTADO
      */
 
-    const muestra = productos
-      .slice(0, 10)
-      .map((p, i) => {
+    mostrarEstado(
+      "✅ CATÁLOGO CARGADO CORRECTAMENTE",
+      "ok"
+    );
 
-        return (
-          (i + 1) +
+
+    resultado.classList.remove(
+      "oculto"
+    );
+
+
+    let texto =
+      "PRODUCTOS RECIBIDOS: " +
+      productos.length +
+      "\n\n";
+
+
+    /*
+     * MOSTRAR LOS PRIMEROS 10
+     */
+
+    productos
+      .slice(0,10)
+      .forEach((p,i)=>{
+
+        texto +=
+          "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+
+        texto +=
+          (i+1) +
           ". " +
-          (p["Producto"] || "(sin nombre)") +
-          "\n" +
-          "   ID: " +
+          (p["Producto"] || "") +
+          "\n";
+
+        texto +=
+          "ID: " +
           (p["ID"] || "") +
-          "\n" +
-          "   Medida: " +
+          "\n";
+
+        texto +=
+          "Medida: " +
           (p["Medida"] || "") +
-          "\n" +
-          "   Color: " +
+          "\n";
+
+        texto +=
+          "Color: " +
           (p["Color"] || "") +
-          "\n" +
-          "   Precio Contado: " +
+          "\n";
+
+        texto +=
+          "Precio Contado: " +
           (p["Precio Contado"] || "") +
-          "\n" +
-          "   Precio Oferta: " +
+          "\n";
+
+        texto +=
+          "OFERTA: " +
           (p["OFERTA"] || "") +
-          "\n" +
-          "   Precio Tarjeta: " +
+          "\n";
+
+        texto +=
+          "Precio Tarjeta: " +
           (p["Precio Tarjeta"] || "") +
-          "\n" +
-          "   Caja m²: " +
+          "\n";
+
+        texto +=
+          "Caja m²: " +
           (p["Caja m²"] || "") +
-          "\n"
-        );
+          "\n";
 
-      })
-      .join("\n");
+        texto +=
+          "Kg/Caja: " +
+          (p["Kg/Caja"] || "") +
+          "\n\n";
 
-
-    resultado.textContent = muestra;
-
-
-  } catch (error) {
-
-    console.error(error);
+      });
 
 
-    estado.className = "error";
+    texto +=
+      "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
 
-    estado.innerHTML =
-      "❌ ERROR<br>" +
-      error.message;
+    texto +=
+      "Columnas disponibles en el catálogo:\n\n";
+
+
+    /*
+     * MOSTRAR TODAS LAS COLUMNAS
+     * DEL PRIMER PRODUCTO
+     */
+
+    if(productos.length){
+
+      Object.keys(productos[0])
+        .forEach(campo=>{
+
+          texto +=
+            "• " +
+            campo +
+            "\n";
+
+        });
+
+    }
 
 
     resultado.textContent =
-      "La prueba no pudo obtener el catálogo.\n\n" +
+      texto;
+
+
+    /*
+     * PARA PODER COMPROBAR DESPUÉS
+     * CUÁNTOS PRODUCTOS HAY,
+     * GUARDAMOS TEMPORALMENTE EL CATÁLOGO
+     * EN MEMORIA DEL NAVEGADOR.
+     */
+
+    window.catalogoPrueba =
+      productos;
+
+
+  }catch(error){
+
+    console.error(
+      "Error:",
+      error
+    );
+
+
+    mostrarEstado(
+      "❌ ERROR: " +
+      error.message,
+      "error"
+    );
+
+
+    resultado.classList.remove(
+      "oculto"
+    );
+
+
+    resultado.textContent =
+      "La prueba no pudo completarse.\n\n" +
       "Detalle:\n" +
       error.message;
+
+  }finally{
+
+    loginBtn.disabled=false;
+
+    loginBtn.textContent=
+      "INGRESAR";
 
   }
 
 }
 
 
-probarCatalogo();
+/* =========================================================
+   EVENTOS
+   ========================================================= */
+
+loginBtn.addEventListener(
+  "click",
+  ingresar
+);
+
+
+pin.addEventListener(
+  "keydown",
+  e=>{
+
+    if(e.key==="Enter"){
+      ingresar();
+    }
+
+  }
+);
+
 
 </script>
 
