@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prueba catálogo G&T</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 30px;
+      color: #222;
+    }
+
+    .contenedor {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 3px 15px rgba(0,0,0,.08);
+    }
+
+    h1 {
+      margin-top: 0;
+      color: #183746;
+    }
+
+    #estado {
+      padding: 15px;
+      border-radius: 8px;
+      background: #eee;
+      margin-bottom: 20px;
+    }
+
+    #resultado {
+      white-space: pre-wrap;
+      background: #f7f7f7;
+      padding: 15px;
+      border-radius: 8px;
+      max-height: 500px;
+      overflow: auto;
+    }
+
+    .ok {
+      background: #edf8f0 !important;
+      color: #176b2c;
+    }
+
+    .error {
+      background: #fff0f1 !important;
+      color: #9d0010;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+  <h1>Prueba de catálogo G&T S.R.L.</h1>
+
+  <div id="estado">
+    ⏳ Intentando cargar el catálogo...
+  </div>
+
+  <div id="resultado">
+    Esperando respuesta...
+  </div>
+
+</div>
+
+<script>
+
+const API_URL =
+  "https://script.google.com/macros/s/AKfycby_3DebaIbZZW2qZ7ShkePBD40Bzo8wGyaHAw8w0omsKahF6CpuUEEPaG2ox3fGkAqk0w/exec";
+
+
+function jsonp(params, timeoutMs = 20000) {
+
+  return new Promise((resolve, reject) => {
+
+    const callback =
+      "prueba_" +
+      Date.now() +
+      "_" +
+      Math.floor(Math.random() * 100000);
+
+    const script = document.createElement("script");
+
+    const q = new URLSearchParams({
+      ...params,
+      callback,
+      _ts: Date.now()
+    });
+
+    let terminado = false;
+
+    const timer = setTimeout(() => {
+      cleanup();
+      reject(new Error("Tiempo de espera agotado."));
+    }, timeoutMs);
+
+
+    function cleanup() {
+
+      if (terminado) return;
+
+      terminado = true;
+
+      clearTimeout(timer);
+
+      delete window[callback];
+
+      script.remove();
+    }
+
+
+    window[callback] = data => {
+
+      cleanup();
+
+      resolve(data);
+
+    };
+
+
+    script.onerror = () => {
+
+      cleanup();
+
+      reject(
+        new Error("No se pudo conectar con el servidor.")
+      );
+
+    };
+
+
+    script.src = API_URL + "?" + q.toString();
+
+    document.body.appendChild(script);
+
+  });
+
+}
+
+
+async function probarCatalogo() {
+
+  const estado = document.getElementById("estado");
+  const resultado = document.getElementById("resultado");
+
+  try {
+
+    /*
+     * IMPORTANTE:
+     * Esta es exactamente la misma acción
+     * que utiliza actualmente ppto.gytsrl.com
+     */
+
+    const r = await jsonp({
+      accion: "catalogo"
+    });
+
+
+    console.log("Respuesta completa:", r);
+
+
+    if (!r) {
+
+      throw new Error(
+        "El servidor no devolvió ninguna respuesta."
+      );
+
+    }
+
+
+    if (!r.ok) {
+
+      throw new Error(
+        r.error || "El servidor respondió con error."
+      );
+
+    }
+
+
+    const productos =
+      Array.isArray(r.productos)
+        ? r.productos
+        : (Array.isArray(r.catalogo)
+            ? r.catalogo
+            : []);
+
+
+    estado.className = "ok";
+
+    estado.innerHTML =
+      "✅ RESPUESTA RECIBIDA<br>" +
+      "Productos recibidos: <strong>" +
+      productos.length +
+      "</strong>";
+
+
+    if (!productos.length) {
+
+      resultado.textContent =
+        "La respuesta fue correcta, pero no contiene productos.\n\n" +
+        JSON.stringify(r, null, 2);
+
+      return;
+
+    }
+
+
+    /*
+     * Mostramos los primeros productos
+     * para comprobar qué información llega.
+     */
+
+    const muestra = productos
+      .slice(0, 10)
+      .map((p, i) => {
+
+        return (
+          (i + 1) +
+          ". " +
+          (p["Producto"] || "(sin nombre)") +
+          "\n" +
+          "   ID: " +
+          (p["ID"] || "") +
+          "\n" +
+          "   Medida: " +
+          (p["Medida"] || "") +
+          "\n" +
+          "   Color: " +
+          (p["Color"] || "") +
+          "\n" +
+          "   Precio Contado: " +
+          (p["Precio Contado"] || "") +
+          "\n" +
+          "   Precio Oferta: " +
+          (p["OFERTA"] || "") +
+          "\n" +
+          "   Precio Tarjeta: " +
+          (p["Precio Tarjeta"] || "") +
+          "\n" +
+          "   Caja m²: " +
+          (p["Caja m²"] || "") +
+          "\n"
+        );
+
+      })
+      .join("\n");
+
+
+    resultado.textContent = muestra;
+
+
+  } catch (error) {
+
+    console.error(error);
+
+
+    estado.className = "error";
+
+    estado.innerHTML =
+      "❌ ERROR<br>" +
+      error.message;
+
+
+    resultado.textContent =
+      "La prueba no pudo obtener el catálogo.\n\n" +
+      "Detalle:\n" +
+      error.message;
+
+  }
+
+}
+
+
+probarCatalogo();
+
+</script>
+
+</body>
+</html>
