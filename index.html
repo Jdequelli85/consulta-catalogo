@@ -233,28 +233,66 @@ input:focus,select:focus{
   font-weight:400
 }
 
-/* Exactamente 6 filas visibles */
+/* =========================================================
+   ÁREA PRINCIPAL DE CONSULTA
+   PC: dos módulos lado a lado
+   CELULAR: módulos uno debajo del otro
+   ========================================================= */
+
+.consulta-grid{
+  display:grid;
+  grid-template-columns:minmax(330px, .82fr) minmax(500px, 1.18fr);
+  gap:16px;
+  align-items:stretch
+}
+
+.consulta-panel{
+  background:#fff;
+  border:1px solid #e2e2e2;
+  border-radius:14px;
+  padding:18px;
+  box-shadow:0 3px 14px rgba(0,0,0,.05)
+}
+
+.resultados-titulo{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-top:15px;
+  margin-bottom:8px;
+  color:var(--azul);
+  font-weight:800;
+  font-size:13px
+}
+
+.resultados-count{
+  color:#777;
+  font-weight:400
+}
+
+/* 4 filas visibles */
 .catalogo-lista{
   display:flex;
   flex-direction:column;
-  gap:6px;
-  height:366px;
+  gap:5px;
+  height:250px;
   overflow-y:auto;
   overflow-x:hidden;
-  padding:2px 4px 2px 1px;
+  padding:1px 4px 1px 1px;
   border:1px solid var(--gris2);
   border-radius:10px;
   background:#fafafa
 }
 
 .catalogo-item{
-  flex:0 0 54px;
+  flex:0 0 57px;
   width:100%;
   text-align:left;
   background:#fff;
   border:1px solid #d9dce1;
   border-radius:8px;
-  padding:8px 12px;
+  padding:8px 11px;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -292,11 +330,7 @@ input:focus,select:focus{
 }
 
 .catalogo-item-id{
-  flex:0 0 auto;
-  font-size:10px!important;
-  color:#999!important;
-  margin:0!important;
-  max-width:120px
+  display:none!important
 }
 
 .empty{
@@ -309,13 +343,16 @@ input:focus,select:focus{
   padding:20px
 }
 
-/* Detalle */
-.detalle-card{
-  border-top:3px solid var(--rojo)
+/* =========================================================
+   DETALLE
+   ========================================================= */
+
+.detalle-panel{
+  min-height:100%
 }
 
 .detalle-placeholder{
-  min-height:220px;
+  min-height:250px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -325,52 +362,79 @@ input:focus,select:focus{
 }
 
 .detalle-top{
-  margin-bottom:18px
+  margin-bottom:15px
+}
+
+.detalle-cabecera{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:14px
 }
 
 .detalle-categoria{
   display:inline-block;
-  font-size:11px;
+  flex:0 0 auto;
+  font-size:10px;
   font-weight:800;
   text-transform:uppercase;
   color:var(--rojo);
   background:#fff0f1;
   border:1px solid #f2b7bd;
   border-radius:20px;
-  padding:5px 9px;
-  margin-bottom:8px
+  padding:5px 9px
 }
 
 .detalle-producto{
   color:var(--azul);
   font-size:22px;
   font-weight:900;
-  line-height:1.2
+  line-height:1.15
 }
 
 .detalle-sub{
-  margin-top:7px;
+  margin-top:5px;
   color:#666;
-  font-size:14px
+  font-size:13px
 }
 
-.detalle-grid{
+.color-lista{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  margin-top:6px
+}
+
+.color-tag{
+  display:inline-block;
+  background:#f3f4f6;
+  border:1px solid #dfe2e5;
+  border-radius:15px;
+  padding:4px 8px;
+  font-size:11px;
+  color:#444
+}
+
+/* Tres precios en una fila */
+.precios-grid{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-top:14px
 }
 
 .dato{
   border:1px solid #e0e3e6;
   border-radius:9px;
-  padding:11px 12px;
+  padding:9px 10px;
   background:#fafafa
 }
 
 .dato-label{
   display:block;
   color:#777;
-  font-size:11px;
+  font-size:10px;
   font-weight:700;
   text-transform:uppercase;
   margin-bottom:4px
@@ -379,41 +443,123 @@ input:focus,select:focus{
 .dato-valor{
   display:block;
   color:#183746;
-  font-size:15px;
-  font-weight:800
+  font-size:14px;
+  font-weight:800;
+  line-height:1.25
 }
 
 .dato-precio{
   background:#fff;
-  border-left:3px solid var(--dorado)
+  border-top:3px solid #d9dee1
 }
 
-.dato-precio .dato-valor{
-  font-size:17px
+.dato-precio.oferta{
+  background:#edf8f0;
+  border-color:#b9dfc2
 }
 
-.color-lista{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-  margin-top:8px
+.dato-precio.oferta .dato-label,
+.dato-precio.oferta .dato-valor{
+  color:var(--verde)
 }
 
-.color-tag{
-  display:inline-block;
-  background:#f3f4f6;
-  border:1px solid #dfe2e5;
-  border-radius:15px;
-  padding:5px 9px;
-  font-size:12px;
-  color:#444
+.dato-precio.tarjeta{
+  background:#f3f7fb;
+  border-color:#cbdceb
+}
+
+.dato-precio.tarjeta .dato-label,
+.dato-precio.tarjeta .dato-valor{
+  color:#245a7a
+}
+
+/* Datos de caja */
+.caja-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:0;
+  margin-top:10px;
+  padding:10px;
+  background:#f7f8f9;
+  border:1px solid #e1e4e7;
+  border-radius:9px
+}
+
+.caja-dato{
+  padding:0 10px;
+  border-right:1px solid #dfe2e5
+}
+
+.caja-dato:first-child{
+  padding-left:2px
+}
+
+.caja-dato:last-child{
+  border-right:0;
+  padding-right:2px
+}
+
+.caja-dato .dato-label{
+  margin-bottom:3px
+}
+
+.caja-dato .dato-valor{
+  font-size:13px
 }
 
 .nota{
-  margin-top:15px;
+  margin-top:10px;
   color:#777;
-  font-size:12px;
-  line-height:1.45
+  font-size:11px;
+  line-height:1.4
+}
+
+@media(max-width:850px){
+  .consulta-grid{
+    grid-template-columns:1fr;
+  }
+
+  .detalle-panel{
+    min-height:auto
+  }
+}
+
+@media(max-width:560px){
+  .consulta-panel{
+    padding:15px
+  }
+
+  .catalogo-lista{
+    height:250px
+  }
+
+  .precios-grid{
+    grid-template-columns:1fr
+  }
+
+  .caja-grid{
+    grid-template-columns:1fr;
+    gap:8px
+  }
+
+  .caja-dato{
+    padding:0 0 8px;
+    border-right:0;
+    border-bottom:1px solid #dfe2e5
+  }
+
+  .caja-dato:last-child{
+    padding-bottom:0;
+    border-bottom:0
+  }
+
+  .detalle-cabecera{
+    flex-direction:column
+  }
+
+  .detalle-producto{
+    font-size:20px
+  }
 }
 
 .oculto{display:none!important}
@@ -925,72 +1071,84 @@ function renderConsulta(){
 
     <main class="wrap">
 
-      <section class="card">
+      <div class="catalog-header">
 
-        <div class="catalog-header">
+        <h1>Consulta de Productos</h1>
 
-          <h1>Consulta de Productos</h1>
+        <div class="subtitle">
+          Buscá un producto para consultar sus precios y características.
+        </div>
 
-          <div class="subtitle">
-            Buscá un producto para consultar sus precios y características.
+      </div>
+
+
+      <div class="consulta-grid">
+
+        <!-- =========================
+             MÓDULO IZQUIERDO
+             ========================= -->
+
+        <section class="consulta-panel">
+
+          <label
+            class="search-label"
+            for="buscarProducto"
+          >
+            🔎 BUSCAR PRODUCTO
+          </label>
+
+
+          <div class="search-box">
+
+            <span class="search-icon">⌕</span>
+
+            <input
+              id="buscarProducto"
+              type="search"
+              placeholder="Nombre, medida..."
+              autocomplete="off"
+            >
+
           </div>
 
-        </div>
+
+          <div class="resultados-titulo">
+
+            <span>Resultados</span>
+
+            <span
+              id="resultadosCount"
+              class="resultados-count"
+            ></span>
+
+          </div>
 
 
-        <label
-          class="search-label"
-          for="buscarProducto"
-        >
-          🔎 BUSCAR PRODUCTO
-        </label>
+          <div
+            id="catalogoLista"
+            class="catalogo-lista"
+          ></div>
+
+        </section>
 
 
-        <div class="search-box">
+        <!-- =========================
+             MÓDULO DERECHO
+             ========================= -->
 
-          <span class="search-icon">⌕</span>
+        <section class="consulta-panel detalle-panel">
 
-          <input
-            id="buscarProducto"
-            type="search"
-            placeholder="Nombre, medida, ID..."
-            autocomplete="off"
+          <div
+            id="detalleProducto"
+            class="detalle-placeholder"
           >
+            Seleccioná un producto para ver
+            sus precios y características.
+          </div>
 
-        </div>
+        </section>
 
-
-        <div class="resultados-titulo">
-
-          <span>Resultados</span>
-
-          <span
-            id="resultadosCount"
-            class="resultados-count"
-          ></span>
-
-        </div>
-
-
-        <div
-          id="catalogoLista"
-          class="catalogo-lista"
-        ></div>
-
-      </section>
-
-
-      <section class="card detalle-card">
-
-        <div
-          id="detalleProducto"
-          class="detalle-placeholder"
-        >
-          Seleccioná un producto para ver
-          sus precios y características.
-        </div>
-
-      </section>
+      </div>
 
     </main>
   `;
@@ -1097,10 +1255,6 @@ function renderCatalogo(){
       const medida =
         String(p["Medida"] || "").trim();
 
-      const id =
-        String(p["ID"] || "").trim();
-
-
       return `
 
         <button
@@ -1121,11 +1275,7 @@ function renderCatalogo(){
 
           </div>
 
-          <span class="catalogo-item-id">
-            ${esc(id)}
-          </span>
-
-        </button>
+         </button>
 
       `;
 
@@ -1208,11 +1358,6 @@ function mostrarProducto(p){
     Number(p["Kg/Caja"] || 0);
 
 
-  /*
-   * Colores:
-   * el catálogo actual utiliza "-" como separador.
-   */
-
   const colores =
     colorRaw
       .split(/\s*-\s*/)
@@ -1222,61 +1367,54 @@ function mostrarProducto(p){
 
   let html = `
 
-    <div class="detalle-top">
+    <div class="detalle-cabecera">
+
+      <div>
+
+        <div class="detalle-producto">
+          ${esc(producto)}
+        </div>
+
+        ${medida ? `
+          <div class="detalle-sub">
+            Medida: <strong>${esc(medida)}</strong>
+          </div>
+        ` : ""}
+
+        ${colores.length ? `
+
+          <div class="detalle-sub">
+            <strong>Color${colores.length > 1 ? "es" : ""}:</strong>
+
+            <div class="color-lista">
+
+              ${colores.map(c=>`
+                <span class="color-tag">
+                  ${esc(c)}
+                </span>
+              `).join("")}
+
+            </div>
+
+          </div>
+
+        ` : ""}
+
+      </div>
 
       <div class="detalle-categoria">
         ${esc(nombreCategoria(categoria))}
       </div>
 
-      <div class="detalle-producto">
-        ${esc(producto)}
-      </div>
+    </div>
   `;
 
 
-  if(medida){
+  /* =========================
+     PRECIOS
+     ========================= */
 
-    html += `
-      <div class="detalle-sub">
-        Medida: <strong>${esc(medida)}</strong>
-      </div>
-    `;
-
-  }
-
-
-  if(colores.length){
-
-    html += `
-
-      <div class="detalle-sub">
-        <strong>Color${colores.length > 1 ? "es" : ""}:</strong>
-
-        <div class="color-lista">
-
-          ${colores.map(c=>`
-            <span class="color-tag">
-              ${esc(c)}
-            </span>
-          `).join("")}
-
-        </div>
-
-      </div>
-
-    `;
-
-  }
-
-
-  html += `</div>`;
-
-
-  /*
-   * PRECIOS
-   */
-
-  html += `<div class="detalle-grid">`;
+  html += `<div class="precios-grid">`;
 
 
   if(precioContado > 0){
@@ -1302,7 +1440,7 @@ function mostrarProducto(p){
   if(tieneOferta){
 
     html += `
-      <div class="dato dato-precio">
+      <div class="dato dato-precio oferta">
 
         <span class="dato-label">
           Precio oferta
@@ -1322,7 +1460,7 @@ function mostrarProducto(p){
   if(precioTarjeta > 0){
 
     html += `
-      <div class="dato dato-precio">
+      <div class="dato dato-precio tarjeta">
 
         <span class="dato-label">
           Precio tarjeta
@@ -1339,65 +1477,26 @@ function mostrarProducto(p){
   }
 
 
-  /*
-   * DATOS DE CAJA
-   *
-   * Se muestran cuando existen.
-   * No mostramos campos vacíos.
-   */
+  html += `</div>`;
+
+
+  /* =========================
+     INFORMACIÓN DE CAJA
+     Solo mostrar si corresponde
+     ========================= */
+
+  const datosCaja = [];
+
 
   if(cajaM2 > 0){
 
-    html += `
-      <div class="dato">
-
-        <span class="dato-label">
-          m² por caja
-        </span>
-
-        <span class="dato-valor">
-          ${numero(cajaM2)} m²
-        </span>
-
-      </div>
-    `;
-
-
-    /*
-     * Precio por caja:
-     * para esta consulta es simplemente
-     * Precio Contado x m² de caja.
-     *
-     * No se utiliza para reemplazar
-     * el precio de tarjeta ni el precio
-     * almacenado en QR_PUBLICO.
-     */
-
-    if(precioContado > 0){
-
-      html += `
-        <div class="dato">
-
-          <span class="dato-label">
-            Precio por caja
-          </span>
-
-          <span class="dato-valor">
-            $ ${numero(precioContado * cajaM2)}
-          </span>
-
-        </div>
-      `;
-
-    }
+    datosCaja.push({
+      label:"m² por caja",
+      valor:`${numero(cajaM2)} m²`
+    });
 
   }
 
-
-  /*
-   * Cantidad de unidades por caja
-   * calculada igual que el sistema actual.
-   */
 
   if(medida && cajaM2 > 0){
 
@@ -1434,19 +1533,10 @@ function mostrarProducto(p){
 
       if(unidades > 0){
 
-        html += `
-          <div class="dato">
-
-            <span class="dato-label">
-              Cantidad por caja
-            </span>
-
-            <span class="dato-valor">
-              ${numero0(unidades)} unidades
-            </span>
-
-          </div>
-        `;
+        datosCaja.push({
+          label:"Cantidad por caja",
+          valor:`${numero0(unidades)} unidades`
+        });
 
       }
 
@@ -1455,18 +1545,44 @@ function mostrarProducto(p){
   }
 
 
-  if(kgCaja > 0){
+  /*
+   * Precio por caja.
+   * Se mantiene como cálculo visual para esta versión:
+   * precio contado × m² por caja.
+   *
+   * No altera ningún dato del catálogo.
+   */
+
+  if(cajaM2 > 0 && precioContado > 0){
+
+    datosCaja.unshift({
+      label:"Precio por caja",
+      valor:`$ ${numero(precioContado * cajaM2)}`
+    });
+
+  }
+
+
+  if(datosCaja.length){
 
     html += `
-      <div class="dato">
+      <div class="caja-grid">
 
-        <span class="dato-label">
-          Kg por caja
-        </span>
+        ${datosCaja.map(d=>`
 
-        <span class="dato-valor">
-          ${numero(kgCaja)} kg
-        </span>
+          <div class="caja-dato">
+
+            <span class="dato-label">
+              ${esc(d.label)}
+            </span>
+
+            <span class="dato-valor">
+              ${esc(d.valor)}
+            </span>
+
+          </div>
+
+        `).join("")}
 
       </div>
     `;
@@ -1475,41 +1591,19 @@ function mostrarProducto(p){
 
 
   /*
-   * ID
+   * Kg/caja solamente si existe y no es necesario
+   * ocupar espacio con un campo vacío.
    */
 
-  const id =
-    String(p["ID"] || "").trim();
-
-  if(id){
+  if(kgCaja > 0){
 
     html += `
-      <div class="dato">
-
-        <span class="dato-label">
-          Código
-        </span>
-
-        <span class="dato-valor">
-          ${esc(id)}
-        </span>
-
+      <div class="nota">
+        ${numero(kgCaja)} kg por caja.
       </div>
     `;
 
   }
-
-
-  html += `</div>`;
-
-
-  html += `
-
-    <div class="nota">
-      Información obtenida directamente del catálogo de productos.
-    </div>
-
-  `;
 
 
   detalle.innerHTML = html;
