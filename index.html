@@ -235,16 +235,19 @@ input:focus,select:focus{
 
 /* =========================================================
    ÁREA PRINCIPAL DE CONSULTA
-   PC: dos módulos lado a lado
-   CELULAR: módulos uno debajo del otro
+   PC:
+     izquierda = buscador/resultados
+     derecha  = información + precios/detalles
+   CELULAR:
+     arriba = buscador/resultados
+     abajo  = información + precios/detalles
    ========================================================= */
 
 .consulta-grid{
   display:grid;
-  grid-template-columns:minmax(0, 0.82fr) minmax(0, 1.18fr);
+  grid-template-columns:minmax(330px, .82fr) minmax(0, 1.18fr);
   gap:16px;
-  align-items:stretch;
-  width:100%;
+  align-items:stretch
 }
 
 .consulta-panel{
@@ -252,9 +255,49 @@ input:focus,select:focus{
   border:1px solid #e2e2e2;
   border-radius:14px;
   padding:18px;
-  box-shadow:0 3px 14px rgba(0,0,0,.05);
+  box-shadow:0 3px 14px rgba(0,0,0,.05)
+}
+
+.consulta-panel-izq{
+  min-width:0
+}
+
+.detalle-columna{
   min-width:0;
-  overflow:hidden;
+  display:grid;
+  grid-template-rows:auto auto;
+  gap:16px
+}
+
+.detalle-modulo{
+  background:#fff;
+  border:1px solid #e2e2e2;
+  border-radius:14px;
+  padding:18px;
+  box-shadow:0 3px 14px rgba(0,0,0,.05);
+  min-width:0
+}
+
+.modulo-titulo{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:14px
+}
+
+.modulo-titulo-texto{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--azul);
+  font-size:18px;
+  font-weight:900
+}
+
+.modulo-titulo-icono{
+  font-size:21px;
+  line-height:1
 }
 
 .resultados-titulo{
@@ -347,66 +390,71 @@ input:focus,select:focus{
 }
 
 /* =========================================================
-   DETALLE
+   MÓDULO SUPERIOR — INFORMAÇÃO DO PRODUTO
    ========================================================= */
 
-.detalle-panel{
-  min-height:100%
+.produto-cabecalho{
+  min-width:0
 }
 
-.detalle-placeholder{
-  min-height:250px;
+.produto-cabecalho-linha{
   display:flex;
   align-items:center;
-  justify-content:center;
-  text-align:center;
-  color:#777;
-  padding:25px
-}
-
-.detalle-top{
-  margin-bottom:15px
-}
-
-.detalle-cabecera{
-  display:flex;
-  align-items:flex-start;
   justify-content:space-between;
-  gap:15px;
-  margin-bottom:14px
+  gap:16px;
+  margin-bottom:12px
 }
 
-.detalle-categoria{
-  display:inline-block;
+.produto-cabecalho-titulo{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--azul);
+  font-size:18px;
+  font-weight:900
+}
+
+.produto-tipo{
   flex:0 0 auto;
-  font-size:10px;
-  font-weight:800;
-  text-transform:uppercase;
-  color:var(--rojo);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:115px;
+  padding:7px 13px;
+  border-radius:20px;
   background:#fff0f1;
   border:1px solid #f2b7bd;
-  border-radius:20px;
-  padding:5px 9px
-}
-
-.detalle-producto{
-  color:var(--azul);
-  font-size:22px;
+  color:var(--rojo);
+  font-size:11px;
   font-weight:900;
-  line-height:1.15
+  text-transform:uppercase
 }
 
-.detalle-sub{
-  margin-top:5px;
+.producto-nombre{
+  color:var(--azul);
+  font-size:26px;
+  font-weight:900;
+  line-height:1.12;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+  margin-bottom:8px
+}
+
+.producto-dato{
+  font-size:14px;
   color:#666;
-  font-size:13px
+  line-height:1.4
+}
+
+.producto-dato strong{
+  color:#183746
 }
 
 .color-lista{
   display:flex;
   flex-wrap:wrap;
   gap:5px;
-  margin-top:6px
+  margin-top:5px
 }
 
 .color-tag{
@@ -419,39 +467,42 @@ input:focus,select:focus{
   color:#444
 }
 
-/* Tres precios en una fila */
+/* =========================================================
+   MÓDULO INFERIOR — PRECIOS Y DETALLES
+   ========================================================= */
+
 .precios-grid{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:8px;
-  margin-top:14px;
-  width:100%;
+  gap:9px;
+  margin-top:4px
 }
 
 .dato{
+  min-width:0;
   border:1px solid #e0e3e6;
   border-radius:9px;
-  padding:9px 10px;
+  padding:10px;
   background:#fafafa;
-  min-width:0;
-  overflow:hidden;
+  text-align:center
 }
 
 .dato-label{
   display:block;
-  color:#777;
+  color:#68727c;
   font-size:10px;
-  font-weight:700;
+  font-weight:800;
   text-transform:uppercase;
-  margin-bottom:4px
+  margin-bottom:5px;
+  line-height:1.15
 }
 
 .dato-valor{
   display:block;
   color:#183746;
-  font-size:14px;
-  font-weight:800;
-  line-height:1.25;
+  font-size:15px;
+  font-weight:900;
+  line-height:1.2;
   overflow-wrap:anywhere
 }
 
@@ -480,7 +531,6 @@ input:focus,select:focus{
   color:#245a7a
 }
 
-/* Datos de caja */
 .caja-grid{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
@@ -489,13 +539,14 @@ input:focus,select:focus{
   padding:10px;
   background:#f7f8f9;
   border:1px solid #e1e4e7;
-  border-radius:9px;
-  width:100%;
+  border-radius:9px
 }
 
 .caja-dato{
+  min-width:0;
   padding:0 10px;
-  border-right:1px solid #dfe2e5
+  border-right:1px solid #dfe2e5;
+  text-align:center
 }
 
 .caja-dato:first-child{
@@ -512,43 +563,45 @@ input:focus,select:focus{
 }
 
 .caja-dato .dato-valor{
-  font-size:13px
+  font-size:14px
 }
 
 .nota{
-  margin-top:10px;
+  margin-top:9px;
   color:#777;
   font-size:11px;
   line-height:1.4
 }
 
-@media(min-width:901px){
-  .detalle-panel{
-    min-height:100%;
-  }
+@media(max-width:850px){
 
-  .detalle-panel .precios-grid{
-    grid-template-columns:repeat(3,minmax(0,1fr));
-  }
-}
-
-@media(max-width:900px){
   .consulta-grid{
-    grid-template-columns:1fr;
+    grid-template-columns:1fr
   }
 
-  .detalle-panel{
-    min-height:auto
+  .detalle-columna{
+    grid-template-rows:auto auto
   }
+
 }
 
 @media(max-width:560px){
-  .consulta-panel{
+
+  .consulta-panel,
+  .detalle-modulo{
     padding:15px
   }
 
-  .catalogo-lista{
-    height:250px
+  .producto-cabecero{
+    font-size:22px
+  }
+
+  .producto-cabecero-linha{
+    gap:8px
+  }
+
+  .producto-nombre{
+    font-size:22px
   }
 
   .precios-grid{
@@ -571,13 +624,11 @@ input:focus,select:focus{
     border-bottom:0
   }
 
-  .detalle-cabecera{
-    flex-direction:column
+  .produto-tipo{
+    min-width:auto;
+    padding:6px 9px
   }
 
-  .detalle-producto{
-    font-size:20px
-  }
 }
 
 .oculto{display:none!important}
@@ -1106,7 +1157,7 @@ function renderConsulta(){
              MÓDULO IZQUIERDO
              ========================= -->
 
-        <section class="consulta-panel">
+        <section class="consulta-panel consulta-panel-izq">
 
           <label
             class="search-label"
@@ -1151,27 +1202,69 @@ function renderConsulta(){
 
 
         <!-- =========================
-             MÓDULO DERECHO
+             COLUMNA DERECHA
              ========================= -->
 
-        <section class="consulta-panel detalle-panel">
+        <div class="detalle-columna">
 
-          <div class="detalle-titulo">
-            <span>
-              <span class="detalle-titulo-icon">▱</span>
-              Información del Producto
-            </span>
-          </div>
+          <!-- MÓDULO SUPERIOR -->
+          <section class="detalle-modulo">
 
-          <div
-            id="detalleProducto"
-            class="detalle-placeholder"
-          >
-            Seleccioná un producto para ver
-            sus precios y características.
-          </div>
+            <div class="producto-cabecero-linha">
 
-        </section>
+              <div class="producto-cabecero-titulo">
+                <span class="modulo-titulo-icono">▱</span>
+                <span>Información del Producto</span>
+              </div>
+
+              <div
+                id="detalleTipo"
+                class="producto-tipo"
+              >
+                PRODUCTO
+              </div>
+
+            </div>
+
+
+            <div
+              id="detalleProductoSuperior"
+              class="producto-cabecera"
+            >
+              <div class="detalle-placeholder">
+                Seleccioná un producto para ver
+                sus características.
+              </div>
+            </div>
+
+          </section>
+
+
+          <!-- MÓDULO INFERIOR -->
+          <section class="detalle-modulo">
+
+            <div class="modulo-titulo">
+
+              <div class="modulo-titulo-texto">
+                <span class="modulo-titulo-icono">🏷️</span>
+                <span>Precios y Detalles</span>
+              </div>
+
+            </div>
+
+
+            <div
+              id="detalleProductoInferior"
+            >
+              <div class="detalle-placeholder">
+                Seleccioná un producto para consultar
+                precios y datos de caja.
+              </div>
+            </div>
+
+          </section>
+
+        </div>
 
       </div>
 
@@ -1347,8 +1440,15 @@ function seleccionarProducto(indice){
 
 function mostrarProducto(p){
 
-  const detalle =
-    $("detalleProducto");
+  const superior =
+    $("detalleProductoSuperior");
+
+  const inferior =
+    $("detalleProductoInferior");
+
+  const tipo =
+    $("detalleTipo");
+
 
   const categoria =
     categoriaProducto(p);
@@ -1383,6 +1483,14 @@ function mostrarProducto(p){
     Number(p["Kg/Caja"] || 0);
 
 
+  /* =========================
+     MÓDULO SUPERIOR
+     ========================= */
+
+  tipo.textContent =
+    nombreCategoria(categoria);
+
+
   const colores =
     colorRaw
       .split(/\s*-\s*/)
@@ -1390,61 +1498,67 @@ function mostrarProducto(p){
       .filter(Boolean);
 
 
-  let html = `
+  let superiorHtml = `
 
-    <div class="detalle-cabecera">
-
-      <div style="min-width:0">
-
-        <div class="detalle-producto">
-          ${esc(producto)}
-        </div>
-
-        ${medida ? `
-          <div class="detalle-sub">
-            Medida: <strong>${esc(medida)}</strong>
-          </div>
-        ` : ""}
-
-        ${colores.length ? `
-
-          <div class="detalle-sub">
-            <strong>Color${colores.length > 1 ? "es" : ""}:</strong>
-
-            <div class="color-lista">
-
-              ${colores.map(c=>`
-                <span class="color-tag">
-                  ${esc(c)}
-                </span>
-              `).join("")}
-
-            </div>
-
-          </div>
-
-        ` : ""}
-
-      </div>
-
-      <div class="detalle-categoria">
-        ${esc(nombreCategoria(categoria))}
-      </div>
-
+    <div class="producto-nombre">
+      ${esc(producto)}
     </div>
+
   `;
 
 
+  if(medida){
+
+    superiorHtml += `
+      <div class="producto-dato">
+        Medida:
+        <strong>${esc(medida)}</strong>
+      </div>
+    `;
+
+  }
+
+
+  if(colores.length){
+
+    superiorHtml += `
+
+      <div class="producto-dato">
+
+        Color:
+
+        <div class="color-lista">
+
+          ${colores.map(c=>`
+            <span class="color-tag">
+              ${esc(c)}
+            </span>
+          `).join("")}
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+
+  superior.innerHTML =
+    superiorHtml;
+
+
   /* =========================
-     PRECIOS
+     MÓDULO INFERIOR
      ========================= */
 
-  html += `<div class="precios-grid">`;
+  let inferiorHtml =
+    `<div class="precios-grid">`;
 
 
   if(precioContado > 0){
 
-    html += `
+    inferiorHtml += `
       <div class="dato dato-precio">
 
         <span class="dato-label">
@@ -1464,7 +1578,7 @@ function mostrarProducto(p){
 
   if(tieneOferta){
 
-    html += `
+    inferiorHtml += `
       <div class="dato dato-precio oferta">
 
         <span class="dato-label">
@@ -1484,7 +1598,7 @@ function mostrarProducto(p){
 
   if(precioTarjeta > 0){
 
-    html += `
+    inferiorHtml += `
       <div class="dato dato-precio tarjeta">
 
         <span class="dato-label">
@@ -1502,12 +1616,11 @@ function mostrarProducto(p){
   }
 
 
-  html += `</div>`;
+  inferiorHtml += `</div>`;
 
 
   /* =========================
-     INFORMACIÓN DE CAJA
-     Solo mostrar si corresponde
+     DATOS DE CAJA
      ========================= */
 
   const datosCaja = [];
@@ -1571,11 +1684,9 @@ function mostrarProducto(p){
 
 
   /*
-   * Precio por caja.
-   * Se mantiene como cálculo visual para esta versión:
-   * precio contado × m² por caja.
-   *
-   * No altera ningún dato del catálogo.
+   * Se mantiene para esta prueba:
+   * Precio contado × m² por caja.
+   * No modifica QR_PUBLICO.
    */
 
   if(cajaM2 > 0 && precioContado > 0){
@@ -1590,7 +1701,7 @@ function mostrarProducto(p){
 
   if(datosCaja.length){
 
-    html += `
+    inferiorHtml += `
       <div class="caja-grid">
 
         ${datosCaja.map(d=>`
@@ -1615,14 +1726,9 @@ function mostrarProducto(p){
   }
 
 
-  /*
-   * Kg/caja solamente si existe y no es necesario
-   * ocupar espacio con un campo vacío.
-   */
-
   if(kgCaja > 0){
 
-    html += `
+    inferiorHtml += `
       <div class="nota">
         ${numero(kgCaja)} kg por caja.
       </div>
@@ -1631,7 +1737,8 @@ function mostrarProducto(p){
   }
 
 
-  detalle.innerHTML = html;
+  inferior.innerHTML =
+    inferiorHtml;
 
 }
 
