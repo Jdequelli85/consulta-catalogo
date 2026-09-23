@@ -241,9 +241,10 @@ input:focus,select:focus{
 
 .consulta-grid{
   display:grid;
-  grid-template-columns:minmax(330px, .82fr) minmax(500px, 1.18fr);
+  grid-template-columns:minmax(0, 0.82fr) minmax(0, 1.18fr);
   gap:16px;
-  align-items:stretch
+  align-items:stretch;
+  width:100%;
 }
 
 .consulta-panel{
@@ -251,7 +252,9 @@ input:focus,select:focus{
   border:1px solid #e2e2e2;
   border-radius:14px;
   padding:18px;
-  box-shadow:0 3px 14px rgba(0,0,0,.05)
+  box-shadow:0 3px 14px rgba(0,0,0,.05);
+  min-width:0;
+  overflow:hidden;
 }
 
 .resultados-titulo{
@@ -419,16 +422,19 @@ input:focus,select:focus{
 /* Tres precios en una fila */
 .precios-grid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(3,minmax(0,1fr));
   gap:8px;
-  margin-top:14px
+  margin-top:14px;
+  width:100%;
 }
 
 .dato{
   border:1px solid #e0e3e6;
   border-radius:9px;
   padding:9px 10px;
-  background:#fafafa
+  background:#fafafa;
+  min-width:0;
+  overflow:hidden;
 }
 
 .dato-label{
@@ -445,7 +451,8 @@ input:focus,select:focus{
   color:#183746;
   font-size:14px;
   font-weight:800;
-  line-height:1.25
+  line-height:1.25;
+  overflow-wrap:anywhere
 }
 
 .dato-precio{
@@ -476,13 +483,14 @@ input:focus,select:focus{
 /* Datos de caja */
 .caja-grid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(3,minmax(0,1fr));
   gap:0;
   margin-top:10px;
   padding:10px;
   background:#f7f8f9;
   border:1px solid #e1e4e7;
-  border-radius:9px
+  border-radius:9px;
+  width:100%;
 }
 
 .caja-dato{
@@ -514,7 +522,17 @@ input:focus,select:focus{
   line-height:1.4
 }
 
-@media(max-width:850px){
+@media(min-width:901px){
+  .detalle-panel{
+    min-height:100%;
+  }
+
+  .detalle-panel .precios-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
+
+@media(max-width:900px){
   .consulta-grid{
     grid-template-columns:1fr;
   }
@@ -602,7 +620,7 @@ input:focus,select:focus{
     font-size:23px
   }
   .catalogo-lista{
-    height:366px
+    height:250px
   }
   .detalle-grid{
     grid-template-columns:1fr
@@ -1138,6 +1156,13 @@ function renderConsulta(){
 
         <section class="consulta-panel detalle-panel">
 
+          <div class="detalle-titulo">
+            <span>
+              <span class="detalle-titulo-icon">▱</span>
+              Información del Producto
+            </span>
+          </div>
+
           <div
             id="detalleProducto"
             class="detalle-placeholder"
@@ -1369,7 +1394,7 @@ function mostrarProducto(p){
 
     <div class="detalle-cabecera">
 
-      <div>
+      <div style="min-width:0">
 
         <div class="detalle-producto">
           ${esc(producto)}
