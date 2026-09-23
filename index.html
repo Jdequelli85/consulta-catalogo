@@ -1479,6 +1479,23 @@ function mostrarProducto(p){
   const cajaM2 =
     Number(p["Caja m²"] || 0);
 
+  /*
+   * Para PASTINA, Precio Contado y Precio Tarjeta
+   * vienen expresados por m².
+   *
+   * El precio final de la caja se obtiene:
+   * precio por m² × m² por caja.
+   */
+  const precioCajaContado =
+    (precioContado > 0 && cajaM2 > 0)
+      ? precioContado * cajaM2
+      : 0;
+
+  const precioCajaTarjeta =
+    (precioTarjeta > 0 && cajaM2 > 0)
+      ? precioTarjeta * cajaM2
+      : 0;
+
   const kgCaja =
     Number(p["Kg/Caja"] || 0);
 
@@ -1582,7 +1599,7 @@ function mostrarProducto(p){
       <div class="precios-grid">
 
         ${
-          precioContado > 0
+          precioCajaContado > 0
             ? `
               <div class="dato dato-precio">
 
@@ -1592,7 +1609,7 @@ function mostrarProducto(p){
                 </span>
 
                 <span class="dato-valor">
-                  $ ${numero(precioContado)}
+                  $ ${numero(precioCajaContado)}
                 </span>
 
               </div>
@@ -1602,7 +1619,7 @@ function mostrarProducto(p){
 
 
         ${
-          precioTarjeta > 0
+          precioCajaTarjeta > 0
             ? `
               <div class="dato dato-precio tarjeta">
 
@@ -1612,7 +1629,7 @@ function mostrarProducto(p){
                 </span>
 
                 <span class="dato-valor">
-                  $ ${numero(precioTarjeta)}
+                  $ ${numero(precioCajaTarjeta)}
                 </span>
 
               </div>
