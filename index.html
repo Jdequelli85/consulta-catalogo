@@ -1213,7 +1213,7 @@ function renderConsulta(){
             <div class="producto-cabecero-linha">
 
               <div class="producto-cabecero-titulo">
-                <span class="modulo-titulo-icono">📦</span>
+                <span class="modulo-titulo-icono">▱</span>
                 <span>Información del Producto</span>
               </div>
 
@@ -1483,12 +1483,28 @@ function mostrarProducto(p){
     Number(p["Kg/Caja"] || 0);
 
 
+  /*
+   * PASTINA:
+   * En el catálogo actual se identifica como PSO
+   * y sin medida.
+   *
+   * Para pastina los precios se muestran directamente
+   * como precio por caja. No se multiplican por m².
+   */
+
+  const esPastina =
+    categoria === "PSO" &&
+    !medida;
+
+
   /* =========================
      MÓDULO SUPERIOR
      ========================= */
 
   tipo.textContent =
-    nombreCategoria(categoria);
+    esPastina
+      ? "PASTINA"
+      : nombreCategoria(categoria);
 
 
   const colores =
@@ -1552,187 +1568,293 @@ function mostrarProducto(p){
      MÓDULO INFERIOR
      ========================= */
 
-  let inferiorHtml =
-    `<div class="precios-grid">`;
+  let inferiorHtml = "";
 
 
-  if(precioContado > 0){
+  /* =====================================================
+     PASTINA
+     ===================================================== */
 
-    inferiorHtml += `
-      <div class="dato dato-precio">
-
-        <span class="dato-label">
-          Precio contado
-        </span>
-
-        <span class="dato-valor">
-          $ ${numero(precioContado)}
-          ${categoria === "CRRL" ? "/ unidad" : "/ m²"}
-        </span>
-
-      </div>
-    `;
-
-  }
-
-
-  if(tieneOferta){
+  if(esPastina){
 
     inferiorHtml += `
-      <div class="dato dato-precio oferta">
 
-        <span class="dato-label">
-          Precio oferta
-        </span>
+      <div class="precios-grid">
 
-        <span class="dato-valor">
-          $ ${numero(oferta)}
-          ${categoria === "CRRL" ? "/ unidad" : "/ m²"}
-        </span>
+        ${
+          precioContado > 0
+            ? `
+              <div class="dato dato-precio">
+
+                <span class="dato-label">
+                  Precio por caja
+                  (contado)
+                </span>
+
+                <span class="dato-valor">
+                  $ ${numero(precioContado)}
+                </span>
+
+              </div>
+            `
+            : ""
+        }
+
+
+        ${
+          precioTarjeta > 0
+            ? `
+              <div class="dato dato-precio tarjeta">
+
+                <span class="dato-label">
+                  Precio por caja
+                  (tarjeta)
+                </span>
+
+                <span class="dato-valor">
+                  $ ${numero(precioTarjeta)}
+                </span>
+
+              </div>
+            `
+            : ""
+        }
+
+
+        ${
+          cajaM2 > 0
+            ? `
+              <div class="dato">
+
+                <span class="dato-label">
+                  m² por caja
+                </span>
+
+                <span class="dato-valor">
+                  ${numero(cajaM2)} m²
+                </span>
+
+              </div>
+            `
+            : ""
+        }
 
       </div>
+
     `;
 
-  }
+
+    /*
+     * En pastina no mostramos:
+     * - Precio contado /m²
+     * - Precio oferta
+     * - Precio tarjeta /m²
+     * - Cantidad por caja
+     * - Precio por caja calculado
+     */
 
 
-  if(precioTarjeta > 0){
+    if(kgCaja > 0){
 
-    inferiorHtml += `
-      <div class="dato dato-precio tarjeta">
+      inferiorHtml += `
+        <div class="nota">
+          ${numero(kgCaja)} kg por caja.
+        </div>
+      `;
 
-        <span class="dato-label">
-          Precio tarjeta
-        </span>
-
-        <span class="dato-valor">
-          $ ${numero(precioTarjeta)}
-          ${categoria === "CRRL" ? "/ unidad" : "/ m²"}
-        </span>
-
-      </div>
-    `;
-
-  }
+    }
 
 
-  inferiorHtml += `</div>`;
+  /*
+   * =====================================================
+   * RESTO DE PRODUCTOS
+   * =====================================================
+   */
+
+  }else{
+
+    inferiorHtml +=
+      `<div class="precios-grid">`;
 
 
-  /* =========================
-     DATOS DE CAJA
-     ========================= */
+    if(precioContado > 0){
 
-  const datosCaja = [];
+      inferiorHtml += `
+        <div class="dato dato-precio">
 
+          <span class="dato-label">
+            Precio contado
+          </span>
 
-  if(cajaM2 > 0){
+          <span class="dato-valor">
+            $ ${numero(precioContado)}
+            ${categoria === "CRRL" ? "/ unidad" : "/ m²"}
+          </span>
 
-    datosCaja.push({
-      label:"m² por caja",
-      valor:`${numero(cajaM2)} m²`
-    });
+        </div>
+      `;
 
-  }
-
-
-  if(medida && cajaM2 > 0){
-
-    const partes =
-      medida
-        .toLowerCase()
-        .split("x")
-        .map(v =>
-          Number(
-            String(v)
-              .trim()
-              .replace(",", ".")
-          )
-        );
+    }
 
 
-    if(
-      partes.length === 2 &&
-      Number.isFinite(partes[0]) &&
-      Number.isFinite(partes[1]) &&
-      partes[0] > 0 &&
-      partes[1] > 0
-    ){
+    if(tieneOferta){
 
-      const areaPieza =
-        (partes[0] / 100) *
-        (partes[1] / 100);
+      inferiorHtml += `
+        <div class="dato dato-precio oferta">
 
-      const unidades =
-        Math.round(
-          cajaM2 / areaPieza
-        );
+          <span class="dato-label">
+            Precio oferta
+          </span>
+
+          <span class="dato-valor">
+            $ ${numero(oferta)}
+            ${categoria === "CRRL" ? "/ unidad" : "/ m²"}
+          </span>
+
+        </div>
+      `;
+
+    }
 
 
-      if(unidades > 0){
+    if(precioTarjeta > 0){
 
-        datosCaja.push({
-          label:"Cantidad por caja",
-          valor:`${numero0(unidades)} unidades`
-        });
+      inferiorHtml += `
+        <div class="dato dato-precio tarjeta">
+
+          <span class="dato-label">
+            Precio tarjeta
+          </span>
+
+          <span class="dato-valor">
+            $ ${numero(precioTarjeta)}
+            ${categoria === "CRRL" ? "/ unidad" : "/ m²"}
+          </span>
+
+        </div>
+      `;
+
+    }
+
+
+    inferiorHtml += `</div>`;
+
+
+    /* =========================
+       DATOS DE CAJA
+       ========================= */
+
+    const datosCaja = [];
+
+
+    if(cajaM2 > 0){
+
+      datosCaja.push({
+        label:"m² por caja",
+        valor:`${numero(cajaM2)} m²`
+      });
+
+    }
+
+
+    if(medida && cajaM2 > 0){
+
+      const partes =
+        medida
+          .toLowerCase()
+          .split("x")
+          .map(v =>
+            Number(
+              String(v)
+                .trim()
+                .replace(",", ".")
+            )
+          );
+
+
+      if(
+        partes.length === 2 &&
+        Number.isFinite(partes[0]) &&
+        Number.isFinite(partes[1]) &&
+        partes[0] > 0 &&
+        partes[1] > 0
+      ){
+
+        const areaPieza =
+          (partes[0] / 100) *
+          (partes[1] / 100);
+
+        const unidades =
+          Math.round(
+            cajaM2 / areaPieza
+          );
+
+
+        if(unidades > 0){
+
+          datosCaja.push({
+            label:"Cantidad por caja",
+            valor:`${numero0(unidades)} unidades`
+          });
+
+        }
 
       }
 
     }
 
-  }
+
+    /*
+     * Para el resto de productos mantenemos
+     * el cálculo visual que ya tenía la versión anterior.
+     */
+
+    if(cajaM2 > 0 && precioContado > 0){
+
+      datosCaja.unshift({
+        label:"Precio por caja",
+        valor:`$ ${numero(precioContado * cajaM2)}`
+      });
+
+    }
 
 
-  /*
-   * Se mantiene para esta prueba:
-   * Precio contado × m² por caja.
-   * No modifica QR_PUBLICO.
-   */
+    if(datosCaja.length){
 
-  if(cajaM2 > 0 && precioContado > 0){
+      inferiorHtml += `
+        <div class="caja-grid">
 
-    datosCaja.unshift({
-      label:"Precio por caja",
-      valor:`$ ${numero(precioContado * cajaM2)}`
-    });
+          ${datosCaja.map(d=>`
 
-  }
+            <div class="caja-dato">
 
+              <span class="dato-label">
+                ${esc(d.label)}
+              </span>
 
-  if(datosCaja.length){
+              <span class="dato-valor">
+                ${esc(d.valor)}
+              </span>
 
-    inferiorHtml += `
-      <div class="caja-grid">
+            </div>
 
-        ${datosCaja.map(d=>`
+          `).join("")}
 
-          <div class="caja-dato">
+        </div>
+      `;
 
-            <span class="dato-label">
-              ${esc(d.label)}
-            </span>
-
-            <span class="dato-valor">
-              ${esc(d.valor)}
-            </span>
-
-          </div>
-
-        `).join("")}
-
-      </div>
-    `;
-
-  }
+    }
 
 
-  if(kgCaja > 0){
+    if(kgCaja > 0){
 
-    inferiorHtml += `
-      <div class="nota">
-        ${numero(kgCaja)} kg por caja.
-      </div>
-    `;
+      inferiorHtml += `
+        <div class="nota">
+          ${numero(kgCaja)} kg por caja.
+        </div>
+      `;
+
+    }
 
   }
 
